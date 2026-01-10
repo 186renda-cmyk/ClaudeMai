@@ -1,0 +1,14 @@
+# Cloudflare Pages Redirect Rules
+# 格式: /source  /destination  status
+
+# 1. 购买成品号 (Product ID: 260)
+/go/buy-account  https://www.naifeistation.com/index/buy?id=260&invite=3903  302
+
+# 2. 代充升级 (Product ID: 248)
+/go/recharge     https://www.naifeistation.com/index/buy?id=248&invite=3903  302
+
+# 3. 客服支持 (Naifei Invite - 引导至上游客服)
+/go/support      https://www.naifeistation.com/i/Satqr                              302
+
+# 4. 兜底跳转 (首页或购买页)
+/go/* https://www.naifeistation.com/index/buy?invite=3903         302

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fff7ed;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ffedd5;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#grad)"/>
+  <rect x="0" y="0" width="1200" height="10" fill="#ea580c"/>
+  
+  <text x="600" y="260" font-family="serif" font-weight="bold" font-size="100" fill="#1e293b" text-anchor="middle">Claude<tspan fill="#ea580c">Mai</tspan></text>
+  
+  <text x="600" y="380" font-family="sans-serif" font-weight="bold" font-size="50" fill="#334155" text-anchor="middle">国内无障碍使用 Claude 3.5 & Opus</text>
+  
+  <text x="600" y="480" font-family="sans-serif" font-size="36" fill="#64748b" text-anchor="middle">✅ 独享成品号   ✅ 正规代充   ✅ 可开发票</text>
+  
+  <circle cx="100" cy="100" r="200" fill="#ea580c" opacity="0.05"/>
+  <circle cx="1100" cy="530" r="150" fill="#ea580c" opacity="0.05"/>
+</svg>
