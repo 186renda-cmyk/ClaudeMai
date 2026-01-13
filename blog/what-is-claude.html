@@ -117,12 +117,27 @@
     <div class="pt-32 pb-20 sm:pt-40 sm:pb-24">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <!-- Breadcrumb -->
-            <nav class="flex mb-8 text-sm text-slate-500">
-                <a href="/" class="hover:text-claude-600 transition-colors">首页</a>
-                <span class="mx-2">/</span>
-                <span class="text-slate-800">博客</span>
-                <span class="mx-2">/</span>
-                <span class="text-slate-800 font-medium">Claude是干嘛的</span>
+            <nav aria-label="Breadcrumb" class="flex mb-8 text-sm text-slate-500">
+                <ol itemscope itemtype="http://schema.org/BreadcrumbList" class="flex items-center flex-wrap">
+                    <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                        <a itemprop="item" href="/" class="hover:text-claude-600 transition-colors">
+                            <span itemprop="name">首页</span>
+                        </a>
+                        <meta itemprop="position" content="1" />
+                    </li>
+                    <li class="mx-2 text-slate-400" aria-hidden="true">/</li>
+                    <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                        <a itemprop="item" href="/blog/" class="hover:text-claude-600 transition-colors">
+                            <span itemprop="name">博客</span>
+                        </a>
+                        <meta itemprop="position" content="2" />
+                    </li>
+                    <li class="mx-2 text-slate-400" aria-hidden="true">/</li>
+                    <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                        <span itemprop="name" class="text-slate-800 font-medium" aria-current="page">Claude是干嘛的</span>
+                        <meta itemprop="position" content="3" />
+                    </li>
+                </ol>
             </nav>
 
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">

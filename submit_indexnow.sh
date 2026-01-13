@@ -14,6 +14,10 @@ JSON_DATA=$(cat <<EOF
   "keyLocation": "${KEY_LOCATION}",
   "urlList": [
     "https://${HOST}/",
+    "https://${HOST}/blog/",
+    "https://${HOST}/blog/what-is-claude.html",
+    "https://${HOST}/blog/claude-vs-chatgpt-coding.html",
+    "https://${HOST}/blog/claude-usage-limits-guide.html",
     "https://${HOST}/legal.html"
   ]
 }

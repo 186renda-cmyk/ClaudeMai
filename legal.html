@@ -21,7 +21,25 @@
         </div>
     </header>
 
-    <div class="max-w-4xl mx-auto px-6 py-12 flex flex-col md:flex-row gap-12">
+    <div class="max-w-4xl mx-auto px-6 pt-8">
+        <nav aria-label="Breadcrumb" class="flex text-sm text-slate-500">
+            <ol itemscope itemtype="http://schema.org/BreadcrumbList" class="flex items-center">
+                <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                    <a itemprop="item" href="/" class="hover:text-orange-600 transition-colors">
+                        <span itemprop="name">首页</span>
+                    </a>
+                    <meta itemprop="position" content="1" />
+                </li>
+                <li class="mx-2 text-slate-400" aria-hidden="true">/</li>
+                <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                    <span itemprop="name" class="text-slate-900 font-medium" aria-current="page">法律条款</span>
+                    <meta itemprop="position" content="2" />
+                </li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="max-w-4xl mx-auto px-6 pb-12 pt-6 flex flex-col md:flex-row gap-12">
         
         <aside class="md:w-64 flex-shrink-0">
             <nav class="sticky top-24 space-y-2">

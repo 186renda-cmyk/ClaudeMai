@@ -9,6 +9,10 @@ KEY_LOCATION = f"https://{HOST}/{KEY}.txt"
 # 需要提交的 URL 列表
 URL_LIST = [
     f"https://{HOST}/",
+    f"https://{HOST}/blog/",
+    f"https://{HOST}/blog/what-is-claude.html",
+    f"https://{HOST}/blog/claude-vs-chatgpt-coding.html",
+    f"https://{HOST}/blog/claude-usage-limits-guide.html",
     f"https://{HOST}/legal.html"
 ]
 # ===========================================

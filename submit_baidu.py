@@ -8,6 +8,10 @@ API_URL = "http://data.zz.baidu.com/urls?site=https://claudemai.top&token=MkpV4i
 # 需要提交的 URL 列表
 URL_LIST = [
     "https://claudemai.top/",
+    "https://claudemai.top/blog/",
+    "https://claudemai.top/blog/what-is-claude.html",
+    "https://claudemai.top/blog/claude-vs-chatgpt-coding.html",
+    "https://claudemai.top/blog/claude-usage-limits-guide.html",
     "https://claudemai.top/legal.html"
 ]
 # ===========================================
