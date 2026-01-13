@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="icon" href="https://claudemai.top/logo.svg">
+    
+    <title>Claude是干嘛的？全能AI助手深度解析 - ClaudeMai</title>
+    <meta name="description" content="Claude是一个功能强大的人工智能助手，不仅能回答问题、创作文字，还能像数字员工一样完成写作、编程和数据分析任务。本文深度解析Claude的核心功能与Skills技能。">
+    <meta name="keywords" content="Claude是干嘛的, Claude功能介绍, Claude写作, Claude编程, Claude数据分析, Claude Skills, Claude使用教程">
+    <link rel="canonical" href="https://claudemai.top/blog/what-is-claude.html">
+    
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://claudemai.top/blog/what-is-claude.html">
+    <meta property="og:title" content="Claude是干嘛的？全能AI助手深度解析 - ClaudeMai">
+    <meta property="og:description" content="Claude是一个功能强大的人工智能助手，不仅能回答问题、创作文字，还能像数字员工一样完成写作、编程和数据分析任务。">
+    <meta property="og:image" content="https://claudemai.top/og-cover.svg">
+    <meta property="og:site_name" content="ClaudeMai">
+    <meta property="og:locale" content="zh_CN">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700;800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans SC', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                        serif: ['Georgia', 'serif'],
+                    },
+                    colors: {
+                        claude: {
+                            50: '#fdf8f6',
+                            100: '#f2e8e5',
+                            500: '#e56f48',
+                            600: '#da7756',
+                            700: '#c55f3e',
+                            900: '#4a2b20',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        .text-gradient {
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-image: linear-gradient(90deg, #1e293b 0%, #da7756 100%);
+        }
+        /* Blog content styles */
+        .prose h2 {
+            font-family: 'Georgia', 'serif';
+            font-weight: 700;
+            color: #1e293b;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+        .prose p {
+            margin-bottom: 1rem;
+            line-height: 1.75;
+            color: #475569;
+        }
+        .prose ul {
+            list-style-type: disc;
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+            color: #475569;
+        }
+        .prose li {
+            margin-bottom: 0.5rem;
+        }
+        .prose strong {
+            color: #1e293b;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 font-sans antialiased selection:bg-claude-600 selection:text-white">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex-shrink-0 flex items-center gap-2">
+                    <a href="/" class="text-2xl font-serif font-bold text-slate-800 tracking-tight">
+                        Claude<span class="text-claude-600">Mai</span>
+                    </a>
+                    <span class="hidden sm:inline-block px-2 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-600 border border-slate-200">
+                        中文服务联盟
+                    </span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="/#features" class="text-slate-600 hover:text-claude-600 transition-colors text-sm font-medium">为什么选择我们</a>
+                    <a href="/#comparison" class="text-slate-600 hover:text-claude-600 transition-colors text-sm font-medium">购买 vs 自注册</a>
+                    <a href="/#security" class="text-slate-600 hover:text-claude-600 transition-colors text-sm font-medium">安全保障</a>
+                    <a href="/#pricing" class="text-slate-600 hover:text-claude-600 transition-colors text-sm font-medium">价格方案</a>
+                    <a href="/blog/" class="text-slate-600 hover:text-claude-600 transition-colors text-sm font-medium">博客</a>
+                    <a href="/#faq" class="text-slate-600 hover:text-claude-600 transition-colors text-sm font-medium">常见问题</a>
+                </div>
+                <div>
+                    <a href="/#pricing" class="inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-slate-900 hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-900 transition-all">
+                        立即购买
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Content -->
+    <div class="pt-32 pb-20 sm:pt-40 sm:pb-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Breadcrumb -->
+            <nav class="flex mb-8 text-sm text-slate-500">
+                <a href="/" class="hover:text-claude-600 transition-colors">首页</a>
+                <span class="mx-2">/</span>
+                <span class="text-slate-800">博客</span>
+                <span class="mx-2">/</span>
+                <span class="text-slate-800 font-medium">Claude是干嘛的</span>
+            </nav>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                <!-- Main Content -->
+                <div class="lg:col-span-8">
+                    <article class="prose prose-slate lg:prose-lg mx-auto bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-slate-200">
+                        <h1 class="text-3xl md:text-4xl font-serif font-bold text-slate-900 mb-6">Claude是干嘛的？全能AI助手深度解析</h1>
+                        
+                        <div class="flex items-center gap-4 mb-8 text-sm text-slate-500 border-b border-slate-100 pb-8">
+                            <span class="flex items-center gap-1">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                2026-01-13
+                            </span>
+                            <span class="flex items-center gap-1">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                                Claude指南
+                            </span>
+                        </div>
+
+                        <p class="text-lg leading-relaxed mb-8">
+                            Claude是一个功能强大的人工智能助手，它不仅能像普通聊天机器人一样回答问题、创作文字，还能像一个得力的“数字员工”帮你完成各种具体任务，尤其在<strong>写作、编程和数据分析</strong>方面表现突出。
+                        </p>
+
+                        <div class="my-8 p-6 bg-orange-50 rounded-2xl border border-orange-100 lg:hidden">
+                            <h3 class="text-lg font-bold text-orange-800 mb-2">🚀 为什么选择 Claude Pro？</h3>
+                            <p class="text-sm text-orange-700 mb-4">
+                                Claude 3.5 Sonnet 和 Opus 4.1 模型在长文本分析、代码编写和创意写作方面均超越 GPT-4。
+                            </p>
+                            <a href="/#pricing" class="inline-flex items-center text-sm font-bold text-orange-600 hover:text-orange-700">
+                                查看价格方案 <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                            </a>
+                        </div>
+
+                        <h2>写作创作，效率翻倍</h2>
+                        <p>对于内容创作者来说，Claude 是一个高效的“写作军师”。无论是写公众号文章、小说，还是日常的邮件和报告，它都能帮你快速生成结构清晰、逻辑严谨的内容。</p>
+                        <ul>
+                            <li><strong>高情商写作：</strong>它能理解你的思路，帮你把想法整理成高情商、有逻辑的文字，特别适合职场沟通。</li>
+                            <li><strong>小说创作：</strong>有用户反馈，用 Claude 一晚上就能生成7篇不同类型的小说，情节逻辑性和人物塑造都做得很好。</li>
+                            <li><strong>内容优化：</strong>通过分析范文，你可以教 Claude 掌握特定的写作风格，让它帮你生成符合要求的爆款内容。</li>
+                        </ul>
+
+                        <h2>编程开发，得力助手</h2>
+                        <p>Claude 的编程能力是它的一大亮点，特别是它的衍生产品 <strong>Claude Code</strong>，功能更加强大。</p>
+                        <ul>
+                            <li><strong>代码理解与修改：</strong>它不仅能写代码，更能理解整个项目的结构，精准地修改现有代码，而不是简单地推倒重来。</li>
+                            <li><strong>自动化任务：</strong>你可以把它想象成一个24小时在线的“技术合伙人”，帮你实现功能、修复bug、分析代码结构。</li>
+                            <li><strong>通用Agent：</strong>通过 Claude Code，你可以让它帮你处理各种电脑上的繁琐工作，比如拆分工资条、分析数据，甚至合成视频。</li>
+                        </ul>
+                        <p class="text-sm text-slate-500 italic mt-4">
+                            💡 提示：Claude Pro 账号支持在终端直接使用 Claude Code 进行开发。 <a href="/#features" class="text-claude-600 underline">了解更多权益</a>
+                        </p>
+
+                        <h2>数据分析，洞察先机</h2>
+                        <p>Claude 能处理和分析各种数据文件，帮你从数据中快速获得有价值的洞察。</p>
+                        <ul>
+                            <li><strong>数据可视化：</strong>你可以直接上传表格或数据文件，Claude 能帮你生成图表，甚至创建交互式仪表板，让你轻松理解复杂的数据。</li>
+                            <li><strong>实时信息：</strong>结合 Skills 功能，Claude 还能获取实时数据，比如股票价格、新闻动态，让分析结果永远与现实同步。</li>
+                        </ul>
+
+                        <h2>Skills 技能，无限可能</h2>
+                        <p>Claude 的 Skills 功能是它的“超能力”，可以把它从一个只会聊天的AI，变成一个能执行任务的自动化引擎。</p>
+                        <ul>
+                            <li><strong>什么是 Skills：</strong>你可以把它理解为预设好的“技能包”或“工作流程手册”。当你需要完成某个特定任务时，Claude 会自动加载对应的 Skill 来执行。</li>
+                            <li><strong>应用场景：</strong>Skills 的应用场景非常广泛，比如自动生成周报、会议纪要、代码审查清单，甚至帮你规划旅行行程。</li>
+                            <li><strong>如何使用：</strong>Skills通常是一个包含指令、脚本和模板的文件夹。你可以从社区或官方库中安装现成的Skills，也可以自己创建，将团队的最佳实践固化下来。</li>
+                        </ul>
+
+                        <div class="mt-12 pt-8 border-t border-slate-200 text-center">
+                            <h3 class="text-2xl font-bold text-slate-900 mb-4">准备好体验 Claude 的强大能力了吗？</h3>
+                            <p class="text-slate-600 mb-8">立即升级 Claude Pro，解锁 200K 上下文、Artifacts 预览与 Claude Code 开发权限。</p>
+                            <a href="/#pricing" class="inline-flex items-center justify-center px-8 py-3.5 rounded-xl bg-claude-600 text-white font-semibold shadow-lg hover:bg-claude-700 hover:shadow-claude-600/30 transition-all transform hover:-translate-y-0.5">
+                                立即购买 Claude Pro
+                            </a>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- Sidebar -->
+                <div class="hidden lg:block lg:col-span-4">
+                    <div class="sticky top-32 space-y-8">
+                        <!-- Sales Card -->
+                        <div class="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden hover:shadow-2xl transition-all duration-300">
+                            <div class="bg-slate-900 text-white p-4 text-center">
+                                <h3 class="font-bold text-lg">Claude Pro 独享账号</h3>
+                                <p class="text-xs text-slate-400 mt-1">正规支付 · 稳定防封 · 独享车位</p>
+                            </div>
+                            <div class="p-6">
+                                <div class="flex items-baseline justify-center mb-6">
+                                    <span class="text-3xl font-extrabold text-slate-900">¥240</span>
+                                    <span class="text-sm font-medium text-slate-500 ml-1">/月</span>
+                                </div>
+                                <ul class="space-y-3 mb-6">
+                                    <li class="flex items-center text-sm text-slate-600">
+                                        <svg class="h-4 w-4 text-green-500 mr-2 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                        支持 Claude 3.5 Sonnet & Opus
+                                    </li>
+                                    <li class="flex items-center text-sm text-slate-600">
+                                        <svg class="h-4 w-4 text-green-500 mr-2 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                        200K 长文本 & Artifacts 预览
+                                    </li>
+                                    <li class="flex items-center text-sm text-slate-600">
+                                        <svg class="h-4 w-4 text-green-500 mr-2 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                        7天无理由质保，掉单包赔
+                                    </li>
+                                </ul>
+                                <a href="/#pricing" class="block w-full bg-claude-600 text-white text-center py-3 rounded-lg font-semibold hover:bg-claude-700 transition-colors shadow-lg shadow-claude-600/30">
+                                    立即购买
+                                </a>
+                                <p class="text-xs text-center text-slate-400 mt-3">支持支付宝 / 微信支付</p>
+                            </div>
+                        </div>
+
+                        <!-- Mini Help Card -->
+                        <div class="bg-slate-50 rounded-2xl p-6 border border-slate-200">
+                            <h4 class="font-bold text-slate-900 mb-2 flex items-center gap-2">
+                                <span class="text-xl">🤔</span> 遇到问题？
+                            </h4>
+                            <p class="text-sm text-slate-600 mb-4">
+                                不确定自己适合哪个套餐？或者遇到了支付问题？
+                            </p>
+                            <a href="/#faq" class="text-sm font-semibold text-claude-600 hover:text-claude-700 flex items-center gap-1">
+                                查看常见问题解答
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 text-slate-400 py-16 border-t border-slate-900 font-sans">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+                <div class="space-y-4">
+                    <a href="/" class="flex items-center gap-2 group">
+                        <div class="w-8 h-8 bg-gradient-to-br from-orange-500 to-orange-600 rounded-lg flex items-center justify-center text-white font-serif font-bold text-lg">C</div>
+                        <span class="text-xl font-bold text-slate-100 tracking-tight">Claude<span class="text-orange-500">Mai</span></span>
+                    </a>
+                    <p class="text-sm leading-relaxed text-slate-500">
+                        专注于为科研人员与开发者提供稳定、合规的 AI 生产力工具。让全球顶尖的 Claude 模型触手可及。
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="text-slate-100 font-bold mb-6">产品与服务</h4>
+                    <ul class="space-y-4 text-sm">
+                        <li><a href="/#pricing" class="hover:text-orange-500 transition-colors">Claude Pro 成品号</a></li>
+                        <li><a href="/#pricing" class="hover:text-orange-500 transition-colors">Claude 账号代充</a></li>
+                        <li><a href="/#features" class="hover:text-orange-500 transition-colors">API 转发 (企业版)</a></li>
+                        <li><a href="/#academic" class="hover:text-orange-500 transition-colors">学术润色指南</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-slate-100 font-bold mb-6">帮助与支持</h4>
+                    <ul class="space-y-4 text-sm">
+                        <li><a href="/#faq" class="hover:text-orange-500 transition-colors">常见问题 (FAQ)</a></li>
+                        <li><a href="/#faq" class="hover:text-orange-500 transition-colors">封号申诉指南</a></li>
+                        <li><a href="/#faq" class="hover:text-orange-500 transition-colors">防风控最佳实践</a></li>
+                        <li><a href="/#security" class="hover:text-orange-500 transition-colors">账号安全中心</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-slate-100 font-bold mb-6">法律合规</h4>
+                    <ul class="space-y-4 text-sm">
+                        <li><a href="/legal.html#terms" class="hover:text-orange-500 transition-colors">服务条款 (Terms)</a></li>
+                        <li><a href="/legal.html#privacy" class="hover:text-orange-500 transition-colors">隐私政策 (Privacy)</a></li>
+                        <li><a href="/legal.html#refund" class="hover:text-orange-500 transition-colors">退款与售后政策</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="pt-8 border-t border-slate-900 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div class="text-xs text-slate-600">
+                    <p>&copy; 2026 ClaudeMai.top. All rights reserved.</p>
+                </div>
+                <div class="text-xs text-slate-600 max-w-lg text-right">
+                    <p>Disclaimer: ClaudeMai is a third-party service provider and is NOT affiliated with, endorsed by, or connected to Anthropic PBC.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
