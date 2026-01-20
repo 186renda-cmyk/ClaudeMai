@@ -1,0 +1,544 @@
+import os
+import re
+import json
+import random
+from bs4 import BeautifulSoup
+from datetime import datetime
+import glob
+
+# Configuration
+DOMAIN = "https://claudemai.top"
+ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+BLOG_DIR = os.path.join(ROOT_DIR, 'blog')
+INDEX_PATH = os.path.join(ROOT_DIR, 'index.html')
+
+class SiteBuilder:
+    def __init__(self):
+        self.assets = {
+            'nav': None,
+            'footer': None,
+            'icons': []
+        }
+        self.posts_metadata = []
+
+    def run(self):
+        print("🚀 Starting build process...")
+        
+        # Phase 1: Smart Extraction
+        print("Phase 1: Extracting assets from index.html...")
+        self.extract_assets()
+        
+        # Phase 1.5: Collect Metadata (for Recommendations and Homepage)
+        print("Phase 1.5: Collecting blog metadata...")
+        self.collect_metadata()
+        
+        # Phase 2 & 3: Process Blog Posts
+        print("Phase 2 & 3: Processing blog posts...")
+        self.process_blog_posts()
+        
+        # Phase 3.4: Global Update (Homepage)
+        print("Phase 3.4: Updating homepage...")
+        self.update_homepage()
+        
+        print("✅ Build completed successfully.")
+
+    def clean_link(self, url):
+        if not url:
+            return url
+        # Handle anchors
+        if url.startswith('#'):
+            return url
+        # Handle external links
+        if url.startswith('http'):
+            return url
+        
+        # Normalize paths
+        # If it's index.html, it becomes /
+        if url == 'index.html' or url == '/index.html':
+            return '/'
+        
+        # Remove .html extension
+        if url.endswith('.html'):
+            url = url[:-5]
+        
+        # Ensure root relative for internal links (basic heuristic)
+        if not url.startswith('/') and not url.startswith('#'):
+             # If it's just "blog/", it's fine. If it's "blog/foo", fine.
+             # But we want to ensure consistency. 
+             # For this specific site, let's assume links in nav/footer are relative to root or absolute.
+             # In index.html, they are likely relative or absolute.
+             # We should make them absolute path relative to root (starting with /) to work on blog pages.
+             pass
+        
+        # Fix specific cases based on observation
+        if url == 'blog/' or url == '/blog/':
+            return '/blog/'
+            
+        return url
+
+    def standardize_url(self, url, is_asset=False):
+        """
+        Standardizes URLs to be root-relative.
+        For assets (images, icons), keeps extensions.
+        For pages, removes .html.
+        """
+        if not url or url.startswith(('http', 'data:', 'mailto:')):
+            return url
+            
+        # Handle anchors - for extracted assets (nav/footer) that will be used on other pages,
+        # we need to make them absolute paths to the homepage anchors.
+        if url.startswith('#'):
+            return '/' + url
+
+        # Remove ./ if present
+        if url.startswith('./'):
+            url = url[2:]
+
+        # If it's already root relative
+        if url.startswith('/'):
+            path = url
+        else:
+            # Assume it was relative to root in index.html, so prepend /
+            path = '/' + url
+
+        if is_asset:
+            return path
+        
+        # Page link standardization
+        if path.endswith('/index.html'):
+            return path.replace('/index.html', '/')
+        if path.endswith('index.html'):
+            return path.replace('index.html', '/')
+        if path.endswith('.html'):
+            return path[:-5]
+        
+        return path
+
+    def extract_assets(self):
+        if not os.path.exists(INDEX_PATH):
+            raise FileNotFoundError(f"index.html not found at {INDEX_PATH}")
+
+        with open(INDEX_PATH, 'r', encoding='utf-8') as f:
+            soup = BeautifulSoup(f.read(), 'html.parser')
+
+        # 1. Extract Nav
+        nav = soup.find('nav')
+        if nav:
+            # Clean links in nav
+            for a in nav.find_all('a'):
+                if a.get('href'):
+                    a['href'] = self.standardize_url(a['href'])
+            self.assets['nav'] = nav
+        else:
+            print("⚠️ Warning: <nav> not found in index.html")
+
+        # 2. Extract Footer
+        footer = soup.find('footer')
+        if footer:
+            # Clean links in footer
+            for a in footer.find_all('a'):
+                if a.get('href'):
+                    a['href'] = self.standardize_url(a['href'])
+            self.assets['footer'] = footer
+        else:
+            print("⚠️ Warning: <footer> not found in index.html")
+
+        # 3. Extract Icons
+        # <link rel="icon">, <link rel="shortcut icon">, <link rel="apple-touch-icon">
+        head = soup.find('head')
+        if head:
+            icon_rels = ['icon', 'shortcut icon', 'apple-touch-icon']
+            for link in head.find_all('link'):
+                if any(rel in link.get('rel', []) for rel in icon_rels):
+                    # Force root relative path
+                    href = link.get('href', '')
+                    if href:
+                        if not href.startswith('http'):
+                            # Ensure it starts with /
+                            if not href.startswith('/'):
+                                href = '/' + href
+                        link['href'] = href
+                        self.assets['icons'].append(link)
+
+    def collect_metadata(self):
+        # Find all html files in blog_dir
+        blog_files = glob.glob(os.path.join(BLOG_DIR, '*.html'))
+        for file_path in blog_files:
+            filename = os.path.basename(file_path)
+            if filename == 'index.html':
+                continue # Handle index separately or skip for now if it's an aggregation page
+
+            with open(file_path, 'r', encoding='utf-8') as f:
+                soup = BeautifulSoup(f.read(), 'html.parser')
+
+            title = soup.title.string if soup.title else filename
+            if title:
+                title = title.strip()
+            
+            # Extract description
+            desc_tag = soup.find('meta', attrs={'name': 'description'})
+            description = desc_tag['content'].strip() if desc_tag and desc_tag.get('content') else ''
+
+            # Extract date (try to find it in the content as seen in example)
+            # Example: <span class="...">2026-01-13</span>
+            # Heuristic: Find a span with date format
+            date_str = datetime.now().strftime('%Y-%m-%d')
+            
+            # 1. Try to find in existing JSON-LD
+            json_scripts = soup.find_all('script', type='application/ld+json')
+            for script in json_scripts:
+                try:
+                    data = json.loads(script.string)
+                    # Handle if it's a list or dict
+                    if isinstance(data, list):
+                        for item in data:
+                            if item.get('@type') == 'BlogPosting' and item.get('datePublished'):
+                                date_str = item['datePublished']
+                                break
+                    elif isinstance(data, dict):
+                         if data.get('@type') == 'BlogPosting' and data.get('datePublished'):
+                            date_str = data['datePublished']
+                except:
+                    pass
+            
+            # 2. If not found in JSON-LD or it's today's date (default), try to find in text but avoid scripts
+            if date_str == datetime.now().strftime('%Y-%m-%d'):
+                date_pattern = re.compile(r'\d{4}-\d{2}-\d{2}')
+                # Find all text nodes that match the pattern
+                text_nodes = soup.find_all(string=date_pattern)
+                for node in text_nodes:
+                    # Check parent to ensure it's not a script or style or existing JSON-LD
+                    if node.parent.name not in ['script', 'style', 'head', 'title', 'meta']:
+                        date_str = node.strip()
+                        break
+            
+            # Validation: Ensure date_str is actually a date (YYYY-MM-DD)
+            # If it contains JSON or is too long, reset it or try to extract valid date
+            date_match = re.search(r'\d{4}-\d{2}-\d{2}', str(date_str))
+            if date_match:
+                date_str = date_match.group(0)
+            else:
+                # Fallback if no valid date found
+                date_str = datetime.now().strftime('%Y-%m-%d')
+
+            # Extract first image for thumbnail if possible, else default
+            # In the example, there is no specific image in the content, but og:image is set
+            og_image = soup.find('meta', property='og:image')
+            image = og_image['content'] if og_image else 'https://claudemai.top/og-cover.svg'
+
+            url = f"/blog/{filename.replace('.html', '')}"
+
+            self.posts_metadata.append({
+                'title': title.split(' - ')[0].strip(), # Remove site name suffix if present
+                'description': description,
+                'date': date_str,
+                'url': url,
+                'image': image,
+                'filename': filename,
+                'file_path': file_path
+            })
+        
+        # Sort by date descending (assuming string sort works for YYYY-MM-DD)
+        self.posts_metadata.sort(key=lambda x: x['date'], reverse=True)
+
+    def process_blog_posts(self):
+        for post in self.posts_metadata:
+            print(f"  Processing {post['filename']}...")
+            self.reconstruct_page(post)
+
+    def reconstruct_page(self, post):
+        file_path = post['file_path']
+        with open(file_path, 'r', encoding='utf-8') as f:
+            original_soup = BeautifulSoup(f.read(), 'html.parser')
+
+        # Create new soup
+        new_soup = BeautifulSoup('<!DOCTYPE html><html lang="zh-CN" class="scroll-smooth"></html>', 'html.parser')
+        html = new_soup.html
+        
+        # --- HEAD RECONSTRUCTION ---
+        head = new_soup.new_tag('head')
+        html.append(head)
+
+        # Group A: Basic Metadata
+        head.append(new_soup.new_tag('meta', charset='utf-8'))
+        head.append(new_soup.new_tag('meta', attrs={'name': 'viewport', 'content': 'width=device-width, initial-scale=1.0'}))
+        title_tag = new_soup.new_tag('title')
+        title_tag.string = f"{post['title']} - ClaudeMai"
+        head.append(title_tag)
+        head.append(BeautifulSoup('\n', 'html.parser'))
+
+        # Group B: SEO Core
+        head.append(new_soup.new_tag('meta', attrs={'name': 'description', 'content': post['description']}))
+        
+        keywords_tag = original_soup.find('meta', attrs={'name': 'keywords'})
+        keywords = keywords_tag['content'] if keywords_tag else "Claude, Claude AI, Claude 3.5 Sonnet, Opus 4.1"
+        head.append(new_soup.new_tag('meta', attrs={'name': 'keywords', 'content': keywords}))
+        
+        canonical_url = f"{DOMAIN}{post['url']}"
+        head.append(new_soup.new_tag('link', rel='canonical', href=canonical_url))
+        head.append(BeautifulSoup('\n', 'html.parser'))
+
+        # Group C: Indexing & Geo
+        head.append(new_soup.new_tag('meta', attrs={'name': 'robots', 'content': 'index, follow'}))
+        head.append(new_soup.new_tag('meta', attrs={'http-equiv': 'content-language', 'content': 'zh-cn'}))
+        head.append(new_soup.new_tag('link', rel='alternate', hreflang='x-default', href=canonical_url))
+        head.append(new_soup.new_tag('link', rel='alternate', hreflang='zh', href=canonical_url))
+        head.append(new_soup.new_tag('link', rel='alternate', hreflang='zh-CN', href=canonical_url))
+        head.append(BeautifulSoup('\n', 'html.parser'))
+
+        # Group D: Brand & Resources
+        # Favicons
+        for icon in self.assets['icons']:
+            head.append(icon) # This copies the tag
+        
+        # CSS/JS (Tailwind, Fonts) - Hardcoded based on requirements/existing file
+        head.append(new_soup.new_tag('script', src="https://cdn.tailwindcss.com"))
+        head.append(new_soup.new_tag('link', href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700;800&family=JetBrains+Mono:wght@400&display=swap", rel="stylesheet"))
+        
+        # Tailwind Config
+        tailwind_config = """
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans SC', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                        serif: ['Georgia', 'serif'],
+                    },
+                    colors: {
+                        claude: {
+                            50: '#fdf8f6',
+                            100: '#f2e8e5',
+                            500: '#e56f48',
+                            600: '#da7756',
+                            700: '#c55f3e',
+                            900: '#4a2b20',
+                        }
+                    }
+                }
+            }
+        }
+        """
+        script_tag = new_soup.new_tag('script')
+        script_tag.string = tailwind_config
+        head.append(script_tag)
+        
+        # Preserve custom styles if any
+        style_tag = original_soup.find('style')
+        if style_tag:
+            head.append(style_tag)
+        head.append(BeautifulSoup('\n', 'html.parser'))
+
+        # Group E: Schema
+        schema_data = {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": post['title'],
+            "description": post['description'],
+            "datePublished": post['date'],
+            "author": {
+                "@type": "Organization",
+                "name": "ClaudeMai"
+            },
+            "publisher": {
+                "@type": "Organization",
+                "name": "ClaudeMai",
+                "logo": {
+                    "@type": "ImageObject",
+                    "url": "https://claudemai.top/logo.svg"
+                }
+            },
+            "mainEntityOfPage": {
+                "@type": "WebPage",
+                "@id": canonical_url
+            }
+        }
+        
+        breadcrumb_data = {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "首页",
+                    "item": "https://claudemai.top/"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "博客",
+                    "item": "https://claudemai.top/blog/"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 3,
+                    "name": post['title'],
+                    "item": canonical_url
+                }
+            ]
+        }
+        
+        schema_script = new_soup.new_tag('script', type='application/ld+json')
+        schema_script.string = json.dumps([schema_data, breadcrumb_data], ensure_ascii=False, indent=2)
+        head.append(schema_script)
+
+        # --- BODY RECONSTRUCTION ---
+        body = new_soup.new_tag('body', attrs={'class': 'bg-slate-50 text-slate-900 font-sans antialiased selection:bg-claude-600 selection:text-white'})
+        html.append(body)
+
+        # 1. Inject Nav (Layout Sync)
+        if self.assets['nav']:
+            body.append(self.assets['nav'])
+
+        # 2. Main Content
+        # We need to extract the 'main' content from the original file.
+        # Assuming the original file has a <main> tag or we grab the article.
+        original_main = original_soup.find('main')
+        if original_main:
+            # We need to process links inside main as well (Phase 46.1)
+            for a in original_main.find_all('a'):
+                if a.get('href'):
+                    a['href'] = self.standardize_url(a['href'])
+            
+            # 2.1 Inject Recommendation at bottom of article
+            article = original_main.find('article')
+            if article:
+                # Remove existing recommendations to avoid duplication
+                # Look for divs with specific class or content "推荐阅读"
+                for div in article.find_all('div', class_='mt-12 pt-8 border-t border-slate-200'):
+                    if div.find('h3', string=re.compile('推荐阅读')):
+                        div.decompose()
+
+                recommendation_html = self.generate_recommendations(current_post_url=post['url'])
+                recommendation_soup = BeautifulSoup(recommendation_html, 'html.parser')
+                article.append(recommendation_soup)
+            
+            body.append(original_main)
+        else:
+            # Fallback if no main tag (should not happen in good structure)
+            body.append(new_soup.new_tag('main'))
+
+        # 3. Inject Footer (Layout Sync)
+        if self.assets['footer']:
+            body.append(self.assets['footer'])
+
+        # Write back to file
+        with open(file_path, 'w', encoding='utf-8') as f:
+            f.write(str(new_soup.prettify()))
+
+    def generate_recommendations(self, current_post_url):
+        # Pick 3 posts excluding current one
+        candidates = [p for p in self.posts_metadata if p['url'] != current_post_url]
+        recommendations = candidates[:3] # Take top 3 recent ones
+        
+        if not recommendations:
+            return ""
+
+        html = """
+        <div class="mt-12 pt-8 border-t border-slate-200">
+            <h3 class="text-xl font-bold text-slate-900 mb-6">推荐阅读</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        """
+        
+        for rec in recommendations:
+            # Determine icon based on simple logic (reusing logic from update_homepage would be better but keeping it simple here)
+            icon = "📄"
+            if "Claude" in rec['title']: icon = "🤖"
+            if "代码" in rec['title'] or "编程" in rec['title']: icon = "💻"
+            if "封号" in rec['title'] or "限制" in rec['title']: icon = "🛡️"
+            
+            # Determine bg color
+            bg_color = "from-orange-100 to-orange-50"
+            if icon == "💻": bg_color = "from-blue-100 to-blue-50"
+            if icon == "🛡️": bg_color = "from-red-100 to-red-50"
+
+            html += f"""
+                <a href="{rec['url']}" class="group bg-white rounded-xl border border-slate-200 overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+                    <div class="h-32 bg-gradient-to-br {bg_color} flex items-center justify-center">
+                        <div class="text-4xl">{icon}</div>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="text-slate-400 text-xs">{rec['date']}</span>
+                        </div>
+                        <h4 class="font-bold text-slate-900 group-hover:text-claude-600 transition-colors mb-2 line-clamp-2 text-sm md:text-base">{rec['title']}</h4>
+                    </div>
+                </a>
+            """
+        
+        html += """
+            </div>
+        </div>
+        """
+        return html
+
+    def update_homepage(self):
+        if not os.path.exists(INDEX_PATH):
+            return
+
+        with open(INDEX_PATH, 'r', encoding='utf-8') as f:
+            soup = BeautifulSoup(f.read(), 'html.parser')
+        
+        # Locate the blog section
+        # Based on file read earlier: id="blog"
+        blog_section = soup.find(id='blog')
+        if not blog_section:
+            print("⚠️ Warning: #blog section not found in index.html")
+            return
+            
+        # Find the container for cards. 
+        # Structure: <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        grid_container = blog_section.find('div', class_=lambda x: x and 'grid-cols-1' in x and 'md:grid-cols-3' in x)
+        
+        if not grid_container:
+            print("⚠️ Warning: Blog grid container not found in index.html")
+            return
+            
+        # Clear existing cards
+        grid_container.clear()
+        
+        # Add latest 3 posts
+        latest_posts = self.posts_metadata[:3]
+        
+        for post in latest_posts:
+            # Determine icon based on some logic or random, or hardcode for now
+            # The original had 🤖, 💻, 🛡️. We can try to keep it simple or random.
+            icon = "📄"
+            if "Claude" in post['title']: icon = "🤖"
+            if "代码" in post['title'] or "编程" in post['title']: icon = "💻"
+            if "封号" in post['title'] or "限制" in post['title']: icon = "🛡️"
+            
+            # Determine bg color
+            bg_color = "from-orange-100 to-orange-50"
+            if icon == "💻": bg_color = "from-blue-100 to-blue-50"
+            if icon == "🛡️": bg_color = "from-red-100 to-red-50"
+
+            card_html = f"""
+            <a href="{post['url']}" class="group bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                <div class="h-48 bg-gradient-to-br {bg_color} flex items-center justify-center">
+                    <div class="text-6xl">{icon}</div>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center gap-2 mb-3">
+                        <span class="px-2 py-1 bg-slate-100 text-slate-600 text-xs font-bold rounded">最新文章</span>
+                        <span class="text-slate-400 text-xs">{post['date']}</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3 group-hover:text-claude-600 transition-colors">{post['title']}</h3>
+                    <p class="text-slate-600 text-sm line-clamp-3">
+                        {post['description']}
+                    </p>
+                    <div class="mt-4 flex items-center text-claude-600 text-sm font-semibold">
+                        阅读全文 <svg class="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                    </div>
+                </div>
+            </a>
+            """
+            grid_container.append(BeautifulSoup(card_html, 'html.parser'))
+            
+        with open(INDEX_PATH, 'w', encoding='utf-8') as f:
+            f.write(str(soup.prettify()))
+
+if __name__ == "__main__":
+    builder = SiteBuilder()
+    builder.run()
