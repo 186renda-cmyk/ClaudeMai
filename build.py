@@ -40,6 +40,10 @@ class SiteBuilder:
         print("Phase 3.4: Updating homepage...")
         self.update_homepage()
         
+        # Phase 4: Generate Sitemap
+        print("Phase 4: Generating sitemap.xml...")
+        self.generate_sitemap()
+        
         print("✅ Build completed successfully.")
 
     def clean_link(self, url):
@@ -538,6 +542,65 @@ class SiteBuilder:
             
         with open(INDEX_PATH, 'w', encoding='utf-8') as f:
             f.write(str(soup.prettify()))
+
+    def generate_sitemap(self):
+        sitemap_path = os.path.join(ROOT_DIR, 'sitemap.xml')
+        
+        urls = []
+        
+        # 1. Homepage
+        urls.append({
+            'loc': DOMAIN + '/',
+            'lastmod': datetime.now().strftime('%Y-%m-%d'),
+            'changefreq': 'daily',
+            'priority': '1.0'
+        })
+        
+        # 2. Blog Index
+        urls.append({
+            'loc': DOMAIN + '/blog/',
+            'lastmod': datetime.now().strftime('%Y-%m-%d'),
+            'changefreq': 'daily',
+            'priority': '0.9'
+        })
+        
+        # 3. Legal
+        legal_path = os.path.join(ROOT_DIR, 'legal.html')
+        if os.path.exists(legal_path):
+             urls.append({
+                'loc': DOMAIN + '/legal',
+                'lastmod': datetime.now().strftime('%Y-%m-%d'),
+                'changefreq': 'monthly',
+                'priority': '0.3'
+            })
+
+        # 4. Blog Posts
+        for post in self.posts_metadata:
+            # post['url'] is already clean (e.g. /blog/foo)
+            urls.append({
+                'loc': DOMAIN + post['url'],
+                'lastmod': post['date'],
+                'changefreq': 'weekly',
+                'priority': '0.8'
+            })
+            
+        # Generate XML
+        xml = '<?xml version="1.0" encoding="UTF-8"?>\n'
+        xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+        
+        for url in urls:
+            xml += '  <url>\n'
+            xml += f"    <loc>{url['loc']}</loc>\n"
+            xml += f"    <lastmod>{url['lastmod']}</lastmod>\n"
+            xml += f"    <changefreq>{url['changefreq']}</changefreq>\n"
+            xml += f"    <priority>{url['priority']}</priority>\n"
+            xml += '  </url>\n'
+            
+        xml += '</urlset>'
+        
+        with open(sitemap_path, 'w', encoding='utf-8') as f:
+            f.write(xml)
+        print(f"  Generated sitemap with {len(urls)} URLs.")
 
 if __name__ == "__main__":
     builder = SiteBuilder()
