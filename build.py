@@ -40,6 +40,14 @@ class SiteBuilder:
         print("Phase 3.4: Updating homepage...")
         self.update_homepage()
         
+        # Phase 3.5: Process Blog Index
+        print("Phase 3.5: Processing blog index...")
+        self.process_blog_index()
+        
+        # Phase 3.5: Process Blog Index
+        print("Phase 3.5: Processing blog index...")
+        self.process_blog_index()
+        
         # Phase 4: Generate Sitemap
         print("Phase 4: Generating sitemap.xml...")
         self.generate_sitemap()
@@ -541,6 +549,37 @@ class SiteBuilder:
             grid_container.append(BeautifulSoup(card_html, 'html.parser'))
             
         with open(INDEX_PATH, 'w', encoding='utf-8') as f:
+            f.write(str(soup.prettify()))
+
+    def process_blog_index(self):
+        blog_index_path = os.path.join(BLOG_DIR, 'index.html')
+        if not os.path.exists(blog_index_path):
+            return
+
+        with open(blog_index_path, 'r', encoding='utf-8') as f:
+            soup = BeautifulSoup(f.read(), 'html.parser')
+        
+        # Standardize links in main content
+        main = soup.find('main')
+        if main:
+            for a in main.find_all('a'):
+                if a.get('href'):
+                    a['href'] = self.standardize_url(a['href'])
+        
+        # Standardize links in nav and footer (just in case they were manual)
+        nav = soup.find('nav')
+        if nav:
+            for a in nav.find_all('a'):
+                if a.get('href'):
+                    a['href'] = self.standardize_url(a['href'])
+
+        footer = soup.find('footer')
+        if footer:
+            for a in footer.find_all('a'):
+                if a.get('href'):
+                    a['href'] = self.standardize_url(a['href'])
+                    
+        with open(blog_index_path, 'w', encoding='utf-8') as f:
             f.write(str(soup.prettify()))
 
     def generate_sitemap(self):
