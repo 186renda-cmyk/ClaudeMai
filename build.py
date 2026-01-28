@@ -558,8 +558,93 @@ class SiteBuilder:
 
         with open(blog_index_path, 'r', encoding='utf-8') as f:
             soup = BeautifulSoup(f.read(), 'html.parser')
+            
+        # 1. Update Content (Sync with metadata)
+        # Find the main article container: <div class="lg:col-span-8 space-y-8">
+        article_container = soup.find('div', class_=lambda x: x and 'lg:col-span-8' in x and 'space-y-8' in x)
         
-        # Standardize links in main content
+        if article_container:
+            # Identify pagination to preserve it
+            pagination = article_container.find('div', class_=lambda x: x and 'flex' in x and 'justify-center' in x and 'border-t' in x)
+            
+            # Remove existing articles
+            for article in article_container.find_all('article'):
+                article.decompose()
+                
+            # Generate new articles from metadata
+            # We iterate in reverse order of metadata (which is sorted by date desc) 
+            # BUT we want newest first. If we insert_before pagination one by one, 
+            # and we want order: [Newest, ..., Oldest] -> Pagination
+            # We should iterate through metadata (Newest first) and insert them.
+            # However, if we insert_before(pagination), the first one inserted will be right before pagination.
+            # Then the second one inserted right before pagination...
+            # Wait, `insert_before` inserts immediately before.
+            # If we do:
+            # Pagination
+            # Insert A before Pagination -> A, Pagination
+            # Insert B before Pagination -> A, B, Pagination
+            # This is NOT what we want if we iterate A, B. We want A, B.
+            # So if we iterate metadata (A, B, C...), we should append to a list and then insert them?
+            # Or simpler: Just append them if we removed all articles.
+            # But pagination is at the bottom.
+            
+            # Let's collect all new tags first
+            new_articles = []
+            for post in self.posts_metadata:
+                # Determine icon/badge (Simplified logic based on title)
+                badge_text = "资讯"
+                badge_color = "bg-slate-50 text-slate-600 border-slate-100"
+                
+                if "Code" in post['title']: 
+                    badge_text = "效率工具"
+                    badge_color = "bg-green-50 text-green-600 border-green-100"
+                elif "学术" in post['title'] or "论文" in post['title']: 
+                    badge_text = "学术科研"
+                    badge_color = "bg-purple-50 text-purple-600 border-purple-100"
+                elif "干嘛" in post['title'] or "入门" in post['title']: 
+                    badge_text = "入门指南"
+                    badge_color = "bg-orange-50 text-orange-600 border-orange-100"
+                elif "代码" in post['title']: 
+                    badge_text = "编程开发"
+                    badge_color = "bg-blue-50 text-blue-600 border-blue-100"
+                elif "封号" in post['title']: 
+                    badge_text = "避坑指南"
+                    badge_color = "bg-red-50 text-red-600 border-red-100"
+
+                card_html = f"""
+                <article class="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm hover:shadow-md transition-all group">
+                    <div class="flex flex-col sm:flex-row gap-6">
+                        <div class="flex-1">
+                            <div class="flex items-center gap-3 text-sm text-slate-500 mb-3">
+                                <span class="px-2.5 py-0.5 rounded-full {badge_color} text-xs font-bold border">{badge_text}</span>
+                                <span>{post['date']}</span>
+                            </div>
+                            <h2 class="text-2xl font-bold text-slate-900 mb-3 group-hover:text-claude-600 transition-colors">
+                                <a href="{post['url']}">{post['title']}</a>
+                            </h2>
+                            <p class="text-slate-600 leading-relaxed mb-6">
+                                {post['description']}
+                            </p>
+                            <a href="{post['url']}" class="inline-flex items-center text-sm font-semibold text-claude-600 hover:text-claude-700">
+                                阅读全文 <svg class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                            </a>
+                        </div>
+                    </div>
+                </article>
+                """
+                new_articles.append(BeautifulSoup(card_html, 'html.parser'))
+
+            # Now insert them
+            if pagination:
+                # Insert all before pagination
+                for tag in new_articles:
+                    pagination.insert_before(tag)
+            else:
+                # Just append
+                for tag in new_articles:
+                    article_container.append(tag)
+        
+        # 2. Standardize links in main content
         main = soup.find('main')
         if main:
             for a in main.find_all('a'):
