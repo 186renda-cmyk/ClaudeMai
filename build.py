@@ -454,24 +454,17 @@ class SiteBuilder:
         """
         
         for rec in recommendations:
-            # Determine icon based on simple logic (reusing logic from update_homepage would be better but keeping it simple here)
-            icon = "📄"
-            if "Claude" in rec['title']: icon = "🤖"
-            if "代码" in rec['title'] or "编程" in rec['title']: icon = "💻"
-            if "封号" in rec['title'] or "限制" in rec['title']: icon = "🛡️"
-            
-            # Determine bg color
-            bg_color = "from-orange-100 to-orange-50"
-            if icon == "💻": bg_color = "from-blue-100 to-blue-50"
-            if icon == "🛡️": bg_color = "from-red-100 to-red-50"
+            style = self.determine_post_style(rec['title'])
 
             html += f"""
                 <a href="{rec['url']}" class="group bg-white rounded-xl border border-slate-200 overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
-                    <div class="h-32 bg-gradient-to-br {bg_color} flex items-center justify-center">
-                        <div class="text-4xl">{icon}</div>
+                    <div class="h-32 bg-gradient-to-br {style['bg_gradient']} flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+                        <div class="text-4xl transform group-hover:scale-110 transition-transform duration-300 drop-shadow-sm">{style['icon']}</div>
                     </div>
                     <div class="p-4">
                         <div class="flex items-center gap-2 mb-2">
+                            <span class="px-2 py-0.5 rounded-full {style['badge_color']} text-[10px] font-bold border">{style['badge_text']}</span>
                             <span class="text-slate-400 text-xs">{rec['date']}</span>
                         </div>
                         <h4 class="font-bold text-slate-900 group-hover:text-claude-600 transition-colors mb-2 line-clamp-2 text-sm md:text-base">{rec['title']}</h4>
@@ -484,6 +477,74 @@ class SiteBuilder:
         </div>
         """
         return html
+
+    def determine_post_style(self, title):
+        title = title.lower()
+        
+        # Default
+        style = {
+            "icon": "📄",
+            "bg_gradient": "from-gray-100 to-gray-50",
+            "text_color": "text-gray-600",
+            "badge_color": "bg-gray-100 text-gray-600 border-gray-100",
+            "badge_text": "资讯"
+        }
+
+        # 1. Security / Account (Red)
+        if any(k in title for k in ['封号', '限制', '解封', '安全', 'ban', 'account']):
+            style.update({
+                "icon": "🛡️",
+                "bg_gradient": "from-red-100 to-red-50",
+                "text_color": "text-red-600",
+                "badge_color": "bg-red-50 text-red-600 border-red-100",
+                "badge_text": "避坑指南"
+            })
+        
+        # 2. Coding / Tech (Blue)
+        elif any(k in title for k in ['code', '代码', '编程', 'python', 'api', '开发']):
+            style.update({
+                "icon": "💻",
+                "bg_gradient": "from-blue-100 to-blue-50",
+                "text_color": "text-blue-600",
+                "badge_color": "bg-blue-50 text-blue-600 border-blue-100",
+                "badge_text": "编程开发"
+            })
+            if "tool" in title or "工具" in title or "code" in title:
+                style["badge_text"] = "效率工具"
+                style["icon"] = "⚡"
+                style["bg_gradient"] = "from-sky-100 to-sky-50"
+
+        # 3. Academic / Writing (Purple)
+        elif any(k in title for k in ['论文', '写作', '学术', '润色', 'writing', 'research']):
+            style.update({
+                "icon": "🎓",
+                "bg_gradient": "from-purple-100 to-purple-50",
+                "text_color": "text-purple-600",
+                "badge_color": "bg-purple-50 text-purple-600 border-purple-100",
+                "badge_text": "学术科研"
+            })
+
+        # 4. Comparison (Teal)
+        elif any(k in title for k in ['vs', '对比', '区别', '哪个好']):
+            style.update({
+                "icon": "⚖️",
+                "bg_gradient": "from-teal-100 to-teal-50",
+                "text_color": "text-teal-600",
+                "badge_color": "bg-teal-50 text-teal-600 border-teal-100",
+                "badge_text": "深度评测"
+            })
+
+        # 5. General Claude (Orange)
+        elif "claude" in title:
+            style.update({
+                "icon": "🤖",
+                "bg_gradient": "from-orange-100 to-orange-50",
+                "text_color": "text-orange-600",
+                "badge_color": "bg-orange-50 text-orange-600 border-orange-100",
+                "badge_text": "入门指南"
+            })
+            
+        return style
 
     def update_homepage(self):
         if not os.path.exists(INDEX_PATH):
@@ -514,33 +575,24 @@ class SiteBuilder:
         latest_posts = self.posts_metadata[:3]
         
         for post in latest_posts:
-            # Determine icon based on some logic or random, or hardcode for now
-            # The original had 🤖, 💻, 🛡️. We can try to keep it simple or random.
-            icon = "📄"
-            if "Claude" in post['title']: icon = "🤖"
-            if "代码" in post['title'] or "编程" in post['title']: icon = "💻"
-            if "封号" in post['title'] or "限制" in post['title']: icon = "🛡️"
+            style = self.determine_post_style(post['title'])
             
-            # Determine bg color
-            bg_color = "from-orange-100 to-orange-50"
-            if icon == "💻": bg_color = "from-blue-100 to-blue-50"
-            if icon == "🛡️": bg_color = "from-red-100 to-red-50"
-
             card_html = f"""
             <a href="{post['url']}" class="group bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
-                <div class="h-48 bg-gradient-to-br {bg_color} flex items-center justify-center">
-                    <div class="text-6xl">{icon}</div>
+                <div class="h-48 bg-gradient-to-br {style['bg_gradient']} flex items-center justify-center relative overflow-hidden">
+                    <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+                    <div class="text-6xl transform group-hover:scale-110 transition-transform duration-300 drop-shadow-sm">{style['icon']}</div>
                 </div>
                 <div class="p-6">
                     <div class="flex items-center gap-2 mb-3">
-                        <span class="px-2 py-1 bg-slate-100 text-slate-600 text-xs font-bold rounded">最新文章</span>
+                        <span class="px-2.5 py-0.5 rounded-full {style['badge_color']} text-xs font-bold border">{style['badge_text']}</span>
                         <span class="text-slate-400 text-xs">{post['date']}</span>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-3 group-hover:text-claude-600 transition-colors">{post['title']}</h3>
-                    <p class="text-slate-600 text-sm line-clamp-3">
+                    <h3 class="text-xl font-bold text-slate-900 mb-3 group-hover:text-claude-600 transition-colors line-clamp-2">{post['title']}</h3>
+                    <p class="text-slate-600 text-sm line-clamp-3 mb-4">
                         {post['description']}
                     </p>
-                    <div class="mt-4 flex items-center text-claude-600 text-sm font-semibold">
+                    <div class="flex items-center text-claude-600 text-sm font-semibold group-hover:underline decoration-2 underline-offset-2">
                         阅读全文 <svg class="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
                     </div>
                 </div>
@@ -572,62 +624,31 @@ class SiteBuilder:
                 article.decompose()
                 
             # Generate new articles from metadata
-            # We iterate in reverse order of metadata (which is sorted by date desc) 
-            # BUT we want newest first. If we insert_before pagination one by one, 
-            # and we want order: [Newest, ..., Oldest] -> Pagination
-            # We should iterate through metadata (Newest first) and insert them.
-            # However, if we insert_before(pagination), the first one inserted will be right before pagination.
-            # Then the second one inserted right before pagination...
-            # Wait, `insert_before` inserts immediately before.
-            # If we do:
-            # Pagination
-            # Insert A before Pagination -> A, Pagination
-            # Insert B before Pagination -> A, B, Pagination
-            # This is NOT what we want if we iterate A, B. We want A, B.
-            # So if we iterate metadata (A, B, C...), we should append to a list and then insert them?
-            # Or simpler: Just append them if we removed all articles.
-            # But pagination is at the bottom.
-            
-            # Let's collect all new tags first
             new_articles = []
             for post in self.posts_metadata:
-                # Determine icon/badge (Simplified logic based on title)
-                badge_text = "资讯"
-                badge_color = "bg-slate-50 text-slate-600 border-slate-100"
-                
-                if "Code" in post['title']: 
-                    badge_text = "效率工具"
-                    badge_color = "bg-green-50 text-green-600 border-green-100"
-                elif "学术" in post['title'] or "论文" in post['title']: 
-                    badge_text = "学术科研"
-                    badge_color = "bg-purple-50 text-purple-600 border-purple-100"
-                elif "干嘛" in post['title'] or "入门" in post['title']: 
-                    badge_text = "入门指南"
-                    badge_color = "bg-orange-50 text-orange-600 border-orange-100"
-                elif "代码" in post['title']: 
-                    badge_text = "编程开发"
-                    badge_color = "bg-blue-50 text-blue-600 border-blue-100"
-                elif "封号" in post['title']: 
-                    badge_text = "避坑指南"
-                    badge_color = "bg-red-50 text-red-600 border-red-100"
+                style = self.determine_post_style(post['title'])
 
                 card_html = f"""
-                <article class="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm hover:shadow-md transition-all group">
-                    <div class="flex flex-col sm:flex-row gap-6">
-                        <div class="flex-1">
-                            <div class="flex items-center gap-3 text-sm text-slate-500 mb-3">
-                                <span class="px-2.5 py-0.5 rounded-full {badge_color} text-xs font-bold border">{badge_text}</span>
-                                <span>{post['date']}</span>
-                            </div>
-                            <h2 class="text-2xl font-bold text-slate-900 mb-3 group-hover:text-claude-600 transition-colors">
-                                <a href="{post['url']}">{post['title']}</a>
-                            </h2>
-                            <p class="text-slate-600 leading-relaxed mb-6">
-                                {post['description']}
-                            </p>
-                            <a href="{post['url']}" class="inline-flex items-center text-sm font-semibold text-claude-600 hover:text-claude-700">
-                                阅读全文 <svg class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
-                            </a>
+                <article class="group bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-all overflow-hidden">
+                    <div class="flex flex-col sm:flex-row h-full">
+                        <div class="sm:w-64 h-48 sm:h-auto bg-gradient-to-br {style['bg_gradient']} flex items-center justify-center relative shrink-0 overflow-hidden">
+                             <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+                             <div class="text-6xl transform group-hover:scale-110 transition-transform duration-300 drop-shadow-sm">{style['icon']}</div>
+                        </div>
+                        <div class="p-8 flex flex-col justify-center flex-1">
+                             <div class="flex items-center gap-3 text-sm text-slate-500 mb-3">
+                                  <span class="px-2.5 py-0.5 rounded-full {style['badge_color']} text-xs font-bold border">{style['badge_text']}</span>
+                                  <span>{post['date']}</span>
+                             </div>
+                             <h2 class="text-2xl font-bold text-slate-900 mb-3 group-hover:text-claude-600 transition-colors">
+                                  <a href="{post['url']}" class="hover:underline">{post['title']}</a>
+                             </h2>
+                             <p class="text-slate-600 leading-relaxed mb-6 line-clamp-3">
+                                  {post['description']}
+                             </p>
+                             <a href="{post['url']}" class="inline-flex items-center text-sm font-semibold text-claude-600 hover:text-claude-700">
+                                  阅读全文 <svg class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                             </a>
                         </div>
                     </div>
                 </article>
