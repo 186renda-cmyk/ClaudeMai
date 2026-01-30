@@ -52,7 +52,7 @@ class SEOAudit:
         self.external_links = set() # Set of tuples: (url, source_file)
 
         # Configs
-        self.ignore_paths = ['.git', 'node_modules', '__pycache__']
+        self.ignore_paths = ['.git', 'node_modules', '__pycache__', 'MasterTool']
         self.ignore_url_prefixes = ['/go/', 'cdn-cgi', 'javascript:', 'mailto:', '#', 'tel:']
         self.ignore_files_contain = ['google', '404.html', 'baidu_verify']
 
@@ -191,6 +191,21 @@ class SEOAudit:
                 links = soup.find_all('a', href=True)
                 for link in links:
                     href = link['href'].strip()
+                    
+                    # Check External Link Protection
+                    if href.startswith('http') and 'claudemai.top' not in href:
+                         rel = link.get('rel', [])
+                         if isinstance(rel, str): rel = rel.split()
+                         
+                         missing = []
+                         for req in ['nofollow', 'noopener', 'noreferrer']:
+                             if req not in rel:
+                                 missing.append(req)
+                         
+                         if missing:
+                             self.log('WARN', f"External link missing rel attributes ({', '.join(missing)}): {href}", file_path)
+                             self.stats['warnings'] += 1
+
                     self.check_link(file_path, href)
 
         except Exception as e:
@@ -283,11 +298,20 @@ class SEOAudit:
             url, source = item
             try:
                 # Use HEAD request
-                headers = {'User-Agent': 'SEOAuditBot/1.0'}
+                headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'}
                 r = requests.head(url, headers=headers, timeout=5, allow_redirects=True)
+                
+                # Special handling for 403 (Cloudflare/WAF) on known valid sites
+                if r.status_code == 403 and any(d in url for d in ['claude.ai', 'anthropic.com']):
+                    return None
+
                 if r.status_code >= 400:
                     # Retry with GET just in case HEAD is blocked
                     r = requests.get(url, headers=headers, timeout=5, stream=True)
+                    
+                    if r.status_code == 403 and any(d in url for d in ['claude.ai', 'anthropic.com']):
+                        return None
+                        
                     if r.status_code >= 400:
                         return (url, source, r.status_code)
             except requests.RequestException as e:

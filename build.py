@@ -44,10 +44,6 @@ class SiteBuilder:
         print("Phase 3.5: Processing blog index...")
         self.process_blog_index()
         
-        # Phase 3.5: Process Blog Index
-        print("Phase 3.5: Processing blog index...")
-        self.process_blog_index()
-        
         # Phase 4: Generate Sitemap
         print("Phase 4: Generating sitemap.xml...")
         self.generate_sitemap()
@@ -126,6 +122,26 @@ class SiteBuilder:
         
         return path
 
+    def process_links(self, container):
+        if not container:
+            return
+        for a in container.find_all('a'):
+            if a.get('href'):
+                # Standardize
+                a['href'] = self.standardize_url(a['href'])
+                
+                # Protect External
+                url = a['href']
+                if url.startswith('http') and DOMAIN not in url:
+                    rel = a.get('rel', [])
+                    if isinstance(rel, str):
+                        rel = rel.split()
+                    
+                    for val in ['nofollow', 'noopener', 'noreferrer']:
+                        if val not in rel:
+                            rel.append(val)
+                    a['rel'] = rel
+
     def extract_assets(self):
         if not os.path.exists(INDEX_PATH):
             raise FileNotFoundError(f"index.html not found at {INDEX_PATH}")
@@ -137,9 +153,7 @@ class SiteBuilder:
         nav = soup.find('nav')
         if nav:
             # Clean links in nav
-            for a in nav.find_all('a'):
-                if a.get('href'):
-                    a['href'] = self.standardize_url(a['href'])
+            self.process_links(nav)
             self.assets['nav'] = nav
         else:
             print("⚠️ Warning: <nav> not found in index.html")
@@ -148,9 +162,7 @@ class SiteBuilder:
         footer = soup.find('footer')
         if footer:
             # Clean links in footer
-            for a in footer.find_all('a'):
-                if a.get('href'):
-                    a['href'] = self.standardize_url(a['href'])
+            self.process_links(footer)
             self.assets['footer'] = footer
         else:
             print("⚠️ Warning: <footer> not found in index.html")
@@ -409,9 +421,7 @@ class SiteBuilder:
         original_main = original_soup.find('main')
         if original_main:
             # We need to process links inside main as well (Phase 46.1)
-            for a in original_main.find_all('a'):
-                if a.get('href'):
-                    a['href'] = self.standardize_url(a['href'])
+            self.process_links(original_main)
             
             # 2.1 Inject Recommendation at bottom of article
             article = original_main.find('article')
@@ -534,7 +544,17 @@ class SiteBuilder:
                 "badge_text": "深度评测"
             })
 
-        # 5. General Claude (Orange)
+        # 5. Registration (Green)
+        elif any(k in title for k in ['注册', 'register', 'sign up', 'login']):
+            style.update({
+                "icon": "🆔",
+                "bg_gradient": "from-emerald-100 to-emerald-50",
+                "text_color": "text-emerald-600",
+                "badge_color": "bg-emerald-50 text-emerald-600 border-emerald-100",
+                "badge_text": "注册教程"
+            })
+
+        # 6. General Claude (Orange)
         elif "claude" in title:
             style.update({
                 "icon": "🤖",
@@ -600,6 +620,9 @@ class SiteBuilder:
             """
             grid_container.append(BeautifulSoup(card_html, 'html.parser'))
             
+        # Final Polish: Process ALL links in homepage to ensure external link protection
+        self.process_links(soup)
+
         with open(INDEX_PATH, 'w', encoding='utf-8') as f:
             f.write(str(soup.prettify()))
 
@@ -619,10 +642,12 @@ class SiteBuilder:
             # Identify pagination to preserve it
             pagination = article_container.find('div', class_=lambda x: x and 'flex' in x and 'justify-center' in x and 'border-t' in x)
             
-            # Remove existing articles
-            for article in article_container.find_all('article'):
-                article.decompose()
-                
+            # Save pagination element
+            pagination_element = pagination.extract() if pagination else None
+            
+            # Clear all content (including comments and existing articles)
+            article_container.clear()
+            
             # Generate new articles from metadata
             new_articles = []
             for post in self.posts_metadata:
@@ -655,35 +680,27 @@ class SiteBuilder:
                 """
                 new_articles.append(BeautifulSoup(card_html, 'html.parser'))
 
-            # Now insert them
-            if pagination:
-                # Insert all before pagination
-                for tag in new_articles:
-                    pagination.insert_before(tag)
-            else:
-                # Just append
-                for tag in new_articles:
-                    article_container.append(tag)
+            # Append new articles
+            for tag in new_articles:
+                article_container.append(tag)
+                
+            # Restore pagination
+            if pagination_element:
+                article_container.append(pagination_element)
         
         # 2. Standardize links in main content
         main = soup.find('main')
         if main:
-            for a in main.find_all('a'):
-                if a.get('href'):
-                    a['href'] = self.standardize_url(a['href'])
+            self.process_links(main)
         
         # Standardize links in nav and footer (just in case they were manual)
         nav = soup.find('nav')
         if nav:
-            for a in nav.find_all('a'):
-                if a.get('href'):
-                    a['href'] = self.standardize_url(a['href'])
+            self.process_links(nav)
 
         footer = soup.find('footer')
         if footer:
-            for a in footer.find_all('a'):
-                if a.get('href'):
-                    a['href'] = self.standardize_url(a['href'])
+            self.process_links(footer)
                     
         with open(blog_index_path, 'w', encoding='utf-8') as f:
             f.write(str(soup.prettify()))
