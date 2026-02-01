@@ -198,6 +198,10 @@ class SiteBuilder:
             title = soup.title.string if soup.title else filename
             if title:
                 title = title.strip()
+                # Remove year numbers (4 digits) from title for evergreen content
+                import re
+                title = re.sub(r'\s*20\d{2}\s*', ' ', title).strip()
+                title = re.sub(r'\s+', ' ', title) # Clean up multiple spaces
             
             # Extract description
             desc_tag = soup.find('meta', attrs={'name': 'description'})
@@ -464,7 +468,7 @@ class SiteBuilder:
         """
         
         for rec in recommendations:
-            style = self.determine_post_style(rec['title'])
+            style = self.determine_post_style(rec['title'], rec.get('filename', ''))
 
             html += f"""
                 <a href="{rec['url']}" class="group bg-white rounded-xl border border-slate-200 overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
@@ -488,9 +492,77 @@ class SiteBuilder:
         """
         return html
 
-    def determine_post_style(self, title):
+    def determine_post_style(self, title, filename=""):
         title = title.lower()
         
+        # Specific filename mapping to ensure unique icons
+        if filename:
+            if 'academic-writing' in filename:
+                return {
+                    "icon": "🎓",
+                    "bg_gradient": "from-purple-100 to-purple-50",
+                    "text_color": "text-purple-600",
+                    "badge_color": "bg-purple-50 text-purple-600 border-purple-100",
+                    "badge_text": "学术科研"
+                }
+            elif 'usage-limits' in filename:
+                return {
+                    "icon": "🛡️",
+                    "bg_gradient": "from-red-100 to-red-50",
+                    "text_color": "text-red-600",
+                    "badge_color": "bg-red-50 text-red-600 border-red-100",
+                    "badge_text": "避坑指南"
+                }
+            elif 'vs-chatgpt' in filename:
+                return {
+                    "icon": "⚖️",
+                    "bg_gradient": "from-teal-100 to-teal-50",
+                    "text_color": "text-teal-600",
+                    "badge_color": "bg-teal-50 text-teal-600 border-teal-100",
+                    "badge_text": "深度评测"
+                }
+            elif 'buy-claude-pro' in filename:
+                return {
+                    "icon": "💳", 
+                    "bg_gradient": "from-indigo-100 to-indigo-50",
+                    "text_color": "text-indigo-600",
+                    "badge_color": "bg-indigo-50 text-indigo-600 border-indigo-100",
+                    "badge_text": "购买指南"
+                }
+            elif 'register-claude' in filename:
+                return {
+                    "icon": "🆔",
+                    "bg_gradient": "from-emerald-100 to-emerald-50",
+                    "text_color": "text-emerald-600",
+                    "badge_color": "bg-emerald-50 text-emerald-600 border-emerald-100",
+                    "badge_text": "注册教程"
+                }
+            elif 'how-to-use-claude' in filename:
+                return {
+                    "icon": "🧭", 
+                    "bg_gradient": "from-amber-100 to-amber-50",
+                    "text_color": "text-amber-600",
+                    "badge_color": "bg-amber-50 text-amber-600 border-amber-100",
+                    "badge_text": "新手必读"
+                }
+            elif 'what-is-claude-code' in filename:
+                return {
+                    "icon": "⚡", 
+                    "bg_gradient": "from-sky-100 to-sky-50",
+                    "text_color": "text-sky-600",
+                    "badge_color": "bg-sky-50 text-sky-600 border-sky-100",
+                    "badge_text": "效率工具"
+                }
+            elif 'what-is-claude' in filename: # General what-is-claude
+                return {
+                    "icon": "🤖",
+                    "bg_gradient": "from-orange-100 to-orange-50",
+                    "text_color": "text-orange-600",
+                    "badge_color": "bg-orange-50 text-orange-600 border-orange-100",
+                    "badge_text": "入门指南"
+                }
+
+        # Fallback to keyword matching if filename not matched or not provided
         # Default
         style = {
             "icon": "📄",
@@ -595,7 +667,7 @@ class SiteBuilder:
         latest_posts = self.posts_metadata[:3]
         
         for post in latest_posts:
-            style = self.determine_post_style(post['title'])
+            style = self.determine_post_style(post['title'], post.get('filename', ''))
             
             card_html = f"""
             <a href="{post['url']}" class="group bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
@@ -651,7 +723,7 @@ class SiteBuilder:
             # Generate new articles from metadata
             new_articles = []
             for post in self.posts_metadata:
-                style = self.determine_post_style(post['title'])
+                style = self.determine_post_style(post['title'], post.get('filename', ''))
 
                 card_html = f"""
                 <article class="group bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-all overflow-hidden">
