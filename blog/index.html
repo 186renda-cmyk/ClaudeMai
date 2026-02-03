@@ -264,304 +264,27 @@
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
      <!-- Blog List -->
      <div class="lg:col-span-8 space-y-8">
-      <article class="group bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-all overflow-hidden">
-       <div class="flex flex-col sm:flex-row h-full">
-        <div class="sm:w-64 h-48 sm:h-auto bg-gradient-to-br from-amber-100 to-amber-50 flex items-center justify-center relative shrink-0 overflow-hidden">
-         <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]">
-         </div>
-         <div class="text-6xl transform group-hover:scale-110 transition-transform duration-300 drop-shadow-sm">
-          🧭
-         </div>
-        </div>
-        <div class="p-8 flex flex-col justify-center flex-1">
-         <div class="flex items-center gap-3 text-sm text-slate-500 mb-3">
-          <span class="px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-600 border-amber-100 text-xs font-bold border">
-           新手必读
-          </span>
-          <span>
-           2026-02-01
-          </span>
-         </div>
-         <h2 class="text-2xl font-bold text-slate-900 mb-3 group-hover:text-claude-600 transition-colors">
-          <a class="hover:underline" href="/blog/how-to-use-claude">
-           Claude怎么用？最新Claude使用全攻略
-          </a>
-         </h2>
-         <p class="text-slate-600 leading-relaxed mb-6 line-clamp-3">
-          想知道Claude怎么用？本文为您提供年最新Claude使用教程，涵盖账号注册、网页版对话、Claude Code编程助手安装与API调用全流程，助您快速掌握这款强大的AI工具。
-         </p>
-         <a class="inline-flex items-center text-sm font-semibold text-claude-600 hover:text-claude-700" href="/blog/how-to-use-claude">
-          阅读全文
-          <svg class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewbox="0 0 24 24">
-           <path d="M17 8l4 4m0 0l-4 4m4-4H3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-           </path>
-          </svg>
-         </a>
-        </div>
+      <div class="space-y-6 mb-8">
+       <!-- Search -->
+       <div class="relative">
+        <input class="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 focus:border-claude-500 focus:ring-2 focus:ring-claude-200 transition-all outline-none" id="searchInput" placeholder="搜索文章..." type="text"/>
+        <svg class="w-5 h-5 text-slate-400 absolute left-3 top-3.5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+         <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+         </path>
+        </svg>
        </div>
-      </article>
-      <article class="group bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-all overflow-hidden">
-       <div class="flex flex-col sm:flex-row h-full">
-        <div class="sm:w-64 h-48 sm:h-auto bg-gradient-to-br from-indigo-100 to-indigo-50 flex items-center justify-center relative shrink-0 overflow-hidden">
-         <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]">
-         </div>
-         <div class="text-6xl transform group-hover:scale-110 transition-transform duration-300 drop-shadow-sm">
-          💳
-         </div>
-        </div>
-        <div class="p-8 flex flex-col justify-center flex-1">
-         <div class="flex items-center gap-3 text-sm text-slate-500 mb-3">
-          <span class="px-2.5 py-0.5 rounded-full bg-indigo-50 text-indigo-600 border-indigo-100 text-xs font-bold border">
-           购买指南
-          </span>
-          <span>
-           2026-02-01
-          </span>
-         </div>
-         <h2 class="text-2xl font-bold text-slate-900 mb-3 group-hover:text-claude-600 transition-colors">
-          <a class="hover:underline" href="/blog/how-to-buy-claude-pro">
-           Claude Pro怎么购买？最新Claude Pro订阅升级全攻略
-          </a>
-         </h2>
-         <p class="text-slate-600 leading-relaxed mb-6 line-clamp-3">
-          想要升级Claude Pro？本文详解年最新Claude Pro购买教程，涵盖官网订阅、代充平台、iOS内购三种方式，解决国内支付难题，助您轻松解锁Claude 3.5 Sonnet强力模型。
-         </p>
-         <a class="inline-flex items-center text-sm font-semibold text-claude-600 hover:text-claude-700" href="/blog/how-to-buy-claude-pro">
-          阅读全文
-          <svg class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewbox="0 0 24 24">
-           <path d="M17 8l4 4m0 0l-4 4m4-4H3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-           </path>
-          </svg>
-         </a>
-        </div>
+       <!-- Categories -->
+       <div class="flex flex-wrap gap-2 overflow-x-auto pb-2 scrollbar-hide" id="categoryContainer">
+        <!-- Injected by JS -->
        </div>
-      </article>
-      <article class="group bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-all overflow-hidden">
-       <div class="flex flex-col sm:flex-row h-full">
-        <div class="sm:w-64 h-48 sm:h-auto bg-gradient-to-br from-emerald-100 to-emerald-50 flex items-center justify-center relative shrink-0 overflow-hidden">
-         <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]">
-         </div>
-         <div class="text-6xl transform group-hover:scale-110 transition-transform duration-300 drop-shadow-sm">
-          🆔
-         </div>
-        </div>
-        <div class="p-8 flex flex-col justify-center flex-1">
-         <div class="flex items-center gap-3 text-sm text-slate-500 mb-3">
-          <span class="px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-600 border-emerald-100 text-xs font-bold border">
-           注册教程
-          </span>
-          <span>
-           2026-01-30
-          </span>
-         </div>
-         <h2 class="text-2xl font-bold text-slate-900 mb-3 group-hover:text-claude-600 transition-colors">
-          <a class="hover:underline" href="/blog/how-to-register-claude">
-           Claude怎么注册？最新Claude注册与升级Pro保姆级教程
-          </a>
-         </h2>
-         <p class="text-slate-600 leading-relaxed mb-6 line-clamp-3">
-          Claude注册不了？收不到验证码？本文详解最新Claude注册教程，解决手机号验证难题，教你如何升级Claude Pro，附带防封号指南。
-         </p>
-         <a class="inline-flex items-center text-sm font-semibold text-claude-600 hover:text-claude-700" href="/blog/how-to-register-claude">
-          阅读全文
-          <svg class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewbox="0 0 24 24">
-           <path d="M17 8l4 4m0 0l-4 4m4-4H3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-           </path>
-          </svg>
-         </a>
-        </div>
-       </div>
-      </article>
-      <article class="group bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-all overflow-hidden">
-       <div class="flex flex-col sm:flex-row h-full">
-        <div class="sm:w-64 h-48 sm:h-auto bg-gradient-to-br from-red-100 to-red-50 flex items-center justify-center relative shrink-0 overflow-hidden">
-         <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]">
-         </div>
-         <div class="text-6xl transform group-hover:scale-110 transition-transform duration-300 drop-shadow-sm">
-          🛡️
-         </div>
-        </div>
-        <div class="p-8 flex flex-col justify-center flex-1">
-         <div class="flex items-center gap-3 text-sm text-slate-500 mb-3">
-          <span class="px-2.5 py-0.5 rounded-full bg-red-50 text-red-600 border-red-100 text-xs font-bold border">
-           避坑指南
-          </span>
-          <span>
-           2026-01-30
-          </span>
-         </div>
-         <h2 class="text-2xl font-bold text-slate-900 mb-3 group-hover:text-claude-600 transition-colors">
-          <a class="hover:underline" href="/blog/claude-usage-limits-guide">
-           Claude账号被封或限制使用怎么办？防封、申诉与退款全攻略
-          </a>
-         </h2>
-         <p class="text-slate-600 leading-relaxed mb-6 line-clamp-3">
-          Claude账号被封怎么办？本文深度解析Claude封号原因（IP、支付、环境），提供美国人维权申诉思路与邮件模板，并详解封号后的退款流程（Apple/Google/官网），助你找回账号或挽回损失。
-         </p>
-         <a class="inline-flex items-center text-sm font-semibold text-claude-600 hover:text-claude-700" href="/blog/claude-usage-limits-guide">
-          阅读全文
-          <svg class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewbox="0 0 24 24">
-           <path d="M17 8l4 4m0 0l-4 4m4-4H3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-           </path>
-          </svg>
-         </a>
-        </div>
-       </div>
-      </article>
-      <article class="group bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-all overflow-hidden">
-       <div class="flex flex-col sm:flex-row h-full">
-        <div class="sm:w-64 h-48 sm:h-auto bg-gradient-to-br from-purple-100 to-purple-50 flex items-center justify-center relative shrink-0 overflow-hidden">
-         <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]">
-         </div>
-         <div class="text-6xl transform group-hover:scale-110 transition-transform duration-300 drop-shadow-sm">
-          🎓
-         </div>
-        </div>
-        <div class="p-8 flex flex-col justify-center flex-1">
-         <div class="flex items-center gap-3 text-sm text-slate-500 mb-3">
-          <span class="px-2.5 py-0.5 rounded-full bg-purple-50 text-purple-600 border-purple-100 text-xs font-bold border">
-           学术科研
-          </span>
-          <span>
-           2026-01-28
-          </span>
-         </div>
-         <h2 class="text-2xl font-bold text-slate-900 mb-3 group-hover:text-claude-600 transition-colors">
-          <a class="hover:underline" href="/blog/claude-for-academic-writing">
-           Claude写论文那个模型最好？Sonnet vs Opus 深度评测
-          </a>
-         </h2>
-         <p class="text-slate-600 leading-relaxed mb-6 line-clamp-3">
-          想要用Claude写论文却不知道选哪个模型？本文深度解析Claude 3.5 Sonnet与Opus在学术写作中的表现，附带高效论文写作指令与组合玩法。
-         </p>
-         <a class="inline-flex items-center text-sm font-semibold text-claude-600 hover:text-claude-700" href="/blog/claude-for-academic-writing">
-          阅读全文
-          <svg class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewbox="0 0 24 24">
-           <path d="M17 8l4 4m0 0l-4 4m4-4H3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-           </path>
-          </svg>
-         </a>
-        </div>
-       </div>
-      </article>
-      <article class="group bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-all overflow-hidden">
-       <div class="flex flex-col sm:flex-row h-full">
-        <div class="sm:w-64 h-48 sm:h-auto bg-gradient-to-br from-sky-100 to-sky-50 flex items-center justify-center relative shrink-0 overflow-hidden">
-         <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]">
-         </div>
-         <div class="text-6xl transform group-hover:scale-110 transition-transform duration-300 drop-shadow-sm">
-          ⚡
-         </div>
-        </div>
-        <div class="p-8 flex flex-col justify-center flex-1">
-         <div class="flex items-center gap-3 text-sm text-slate-500 mb-3">
-          <span class="px-2.5 py-0.5 rounded-full bg-sky-50 text-sky-600 border-sky-100 text-xs font-bold border">
-           效率工具
-          </span>
-          <span>
-           2026-01-28
-          </span>
-         </div>
-         <h2 class="text-2xl font-bold text-slate-900 mb-3 group-hover:text-claude-600 transition-colors">
-          <a class="hover:underline" href="/blog/what-is-claude-code">
-           Claude Code是干嘛的？你的全能AI技术合伙人
-          </a>
-         </h2>
-         <p class="text-slate-600 leading-relaxed mb-6 line-clamp-3">
-          Claude Code远不止一个编程工具，它更像一个全能的AI个人助理。本文详解Claude Code的核心功能、Agent代理机制以及如何安装使用。
-         </p>
-         <a class="inline-flex items-center text-sm font-semibold text-claude-600 hover:text-claude-700" href="/blog/what-is-claude-code">
-          阅读全文
-          <svg class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewbox="0 0 24 24">
-           <path d="M17 8l4 4m0 0l-4 4m4-4H3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-           </path>
-          </svg>
-         </a>
-        </div>
-       </div>
-      </article>
-      <article class="group bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-all overflow-hidden">
-       <div class="flex flex-col sm:flex-row h-full">
-        <div class="sm:w-64 h-48 sm:h-auto bg-gradient-to-br from-orange-100 to-orange-50 flex items-center justify-center relative shrink-0 overflow-hidden">
-         <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]">
-         </div>
-         <div class="text-6xl transform group-hover:scale-110 transition-transform duration-300 drop-shadow-sm">
-          🤖
-         </div>
-        </div>
-        <div class="p-8 flex flex-col justify-center flex-1">
-         <div class="flex items-center gap-3 text-sm text-slate-500 mb-3">
-          <span class="px-2.5 py-0.5 rounded-full bg-orange-50 text-orange-600 border-orange-100 text-xs font-bold border">
-           入门指南
-          </span>
-          <span>
-           2026-01-13
-          </span>
-         </div>
-         <h2 class="text-2xl font-bold text-slate-900 mb-3 group-hover:text-claude-600 transition-colors">
-          <a class="hover:underline" href="/blog/what-is-claude">
-           Claude是干嘛的？全能AI助手深度解析
-          </a>
-         </h2>
-         <p class="text-slate-600 leading-relaxed mb-6 line-clamp-3">
-          Claude是一个功能强大的人工智能助手，不仅能回答问题、创作文字，还能像数字员工一样完成写作、编程和数据分析任务。本文深度解析Claude的核心功能与Skills技能。
-         </p>
-         <a class="inline-flex items-center text-sm font-semibold text-claude-600 hover:text-claude-700" href="/blog/what-is-claude">
-          阅读全文
-          <svg class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewbox="0 0 24 24">
-           <path d="M17 8l4 4m0 0l-4 4m4-4H3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-           </path>
-          </svg>
-         </a>
-        </div>
-       </div>
-      </article>
-      <article class="group bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-all overflow-hidden">
-       <div class="flex flex-col sm:flex-row h-full">
-        <div class="sm:w-64 h-48 sm:h-auto bg-gradient-to-br from-teal-100 to-teal-50 flex items-center justify-center relative shrink-0 overflow-hidden">
-         <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]">
-         </div>
-         <div class="text-6xl transform group-hover:scale-110 transition-transform duration-300 drop-shadow-sm">
-          ⚖️
-         </div>
-        </div>
-        <div class="p-8 flex flex-col justify-center flex-1">
-         <div class="flex items-center gap-3 text-sm text-slate-500 mb-3">
-          <span class="px-2.5 py-0.5 rounded-full bg-teal-50 text-teal-600 border-teal-100 text-xs font-bold border">
-           深度评测
-          </span>
-          <span>
-           2026-01-13
-          </span>
-         </div>
-         <h2 class="text-2xl font-bold text-slate-900 mb-3 group-hover:text-claude-600 transition-colors">
-          <a class="hover:underline" href="/blog/claude-vs-chatgpt-coding">
-           Claude和ChatGPT写代码哪个好？程序员实测对比
-          </a>
-         </h2>
-         <p class="text-slate-600 leading-relaxed mb-6 line-clamp-3">
-          深度对比Claude和ChatGPT在编程领域的表现。Claude更像执行力强的“技术工人”，适合快速生成代码；ChatGPT更像思路清晰的“技术总监”，擅长架构设计与审查。教你如何组合使用两者最大化效率。
-         </p>
-         <a class="inline-flex items-center text-sm font-semibold text-claude-600 hover:text-claude-700" href="/blog/claude-vs-chatgpt-coding">
-          阅读全文
-          <svg class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewbox="0 0 24 24">
-           <path d="M17 8l4 4m0 0l-4 4m4-4H3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-           </path>
-          </svg>
-         </a>
-        </div>
-       </div>
-      </article>
-      <div class="flex justify-center items-center gap-2 pt-8 border-t border-slate-200">
-       <span class="px-4 py-2 text-sm font-medium text-slate-400 bg-slate-50 rounded-lg border border-slate-200 cursor-not-allowed">
-        上一页
-       </span>
-       <span class="px-4 py-2 text-sm font-medium text-white bg-claude-600 rounded-lg shadow-sm shadow-claude-600/30">
-        1
-       </span>
-       <span class="px-4 py-2 text-sm font-medium text-slate-400 bg-slate-50 rounded-lg border border-slate-200 cursor-not-allowed">
-        下一页
-       </span>
+      </div>
+      <!-- Posts Container -->
+      <div class="space-y-6 min-h-[400px]" id="postsContainer">
+       <!-- Injected by JS -->
+      </div>
+      <!-- Pagination -->
+      <div class="flex justify-center items-center gap-2 pt-8 border-t border-slate-200 mt-8" id="paginationContainer">
+       <!-- Injected by JS -->
       </div>
      </div>
      <!-- Sidebar -->
@@ -752,5 +475,174 @@
     </div>
    </div>
   </footer>
+  <script>
+   const POSTS = [{"title": "Claude报错怎么办？常见错误代码解析与完美解决方案", "description": "遇到Claude报错？本文汇总Claude及Claude Code常见错误代码（403, 520, overloaded_error, invalid_request_error等）的解决方法，涵盖网络配置、API调试、环境修复及账号权限问题。", "date": "2026-02-03", "url": "/blog/claude-error-troubleshooting", "image": "https://claudemai.top/og-cover.svg", "filename": "claude-error-troubleshooting.html", "file_path": "/Users/xiaxingyu/Desktop/网站项目/ClaudeMai/blog/claude-error-troubleshooting.html", "style": {"icon": "🛡️", "bg_gradient": "from-red-100 to-red-50", "text_color": "text-red-600", "badge_color": "bg-red-50 text-red-600 border-red-100", "badge_text": "避坑指南"}, "category_name": "避坑指南", "category_slug": "safety"}, {"title": "Claude Opus是什么？Anthropic最强旗舰模型深度解析", "description": "Claude Opus是什么？本文深度解析Anthropic最强旗舰模型Claude 3 Opus及其升级版Opus 4.5，对比Sonnet与Haiku，揭秘其在编程、逻辑推理和复杂任务中的卓越表现。", "date": "2026-02-03", "url": "/blog/what-is-claude-opus", "image": "https://claudemai.top/og-cover.svg", "filename": "what-is-claude-opus.html", "file_path": "/Users/xiaxingyu/Desktop/网站项目/ClaudeMai/blog/what-is-claude-opus.html", "style": {"icon": "🧠", "bg_gradient": "from-purple-100 to-purple-50", "text_color": "text-purple-600", "badge_color": "bg-purple-50 text-purple-600 border-purple-100", "badge_text": "旗舰模型"}, "category_name": "旗舰模型", "category_slug": "models"}, {"title": "Claude怎么用？最新Claude使用全攻略", "description": "想知道Claude怎么用？本文为您提供年最新Claude使用教程，涵盖账号注册、网页版对话、Claude Code编程助手安装与API调用全流程，助您快速掌握这款强大的AI工具。", "date": "2026-02-01", "url": "/blog/how-to-use-claude", "image": "https://claudemai.top/og-cover.svg", "filename": "how-to-use-claude.html", "file_path": "/Users/xiaxingyu/Desktop/网站项目/ClaudeMai/blog/how-to-use-claude.html", "style": {"icon": "🧭", "bg_gradient": "from-amber-100 to-amber-50", "text_color": "text-amber-600", "badge_color": "bg-amber-50 text-amber-600 border-amber-100", "badge_text": "新手必读"}, "category_name": "新手必读", "category_slug": "tutorial"}, {"title": "Claude Pro怎么购买？最新Claude Pro订阅升级全攻略", "description": "想要升级Claude Pro？本文详解年最新Claude Pro购买教程，涵盖官网订阅、代充平台、iOS内购三种方式，解决国内支付难题，助您轻松解锁Claude 3.5 Sonnet强力模型。", "date": "2026-02-01", "url": "/blog/how-to-buy-claude-pro", "image": "https://claudemai.top/og-cover.svg", "filename": "how-to-buy-claude-pro.html", "file_path": "/Users/xiaxingyu/Desktop/网站项目/ClaudeMai/blog/how-to-buy-claude-pro.html", "style": {"icon": "💳", "bg_gradient": "from-indigo-100 to-indigo-50", "text_color": "text-indigo-600", "badge_color": "bg-indigo-50 text-indigo-600 border-indigo-100", "badge_text": "购买指南"}, "category_name": "购买指南", "category_slug": "pricing"}, {"title": "Claude怎么注册？最新Claude注册与升级Pro保姆级教程", "description": "Claude注册不了？收不到验证码？本文详解最新Claude注册教程，解决手机号验证难题，教你如何升级Claude Pro，附带防封号指南。", "date": "2026-01-30", "url": "/blog/how-to-register-claude", "image": "https://claudemai.top/og-cover.svg", "filename": "how-to-register-claude.html", "file_path": "/Users/xiaxingyu/Desktop/网站项目/ClaudeMai/blog/how-to-register-claude.html", "style": {"icon": "🆔", "bg_gradient": "from-emerald-100 to-emerald-50", "text_color": "text-emerald-600", "badge_color": "bg-emerald-50 text-emerald-600 border-emerald-100", "badge_text": "注册教程"}, "category_name": "注册教程", "category_slug": "tutorial"}, {"title": "Claude账号被封或限制使用怎么办？防封、申诉与退款全攻略", "description": "Claude账号被封怎么办？本文深度解析Claude封号原因（IP、支付、环境），提供美国人维权申诉思路与邮件模板，并详解封号后的退款流程（Apple/Google/官网），助你找回账号或挽回损失。", "date": "2026-01-30", "url": "/blog/claude-usage-limits-guide", "image": "https://claudemai.top/og-cover.svg", "filename": "claude-usage-limits-guide.html", "file_path": "/Users/xiaxingyu/Desktop/网站项目/ClaudeMai/blog/claude-usage-limits-guide.html", "style": {"icon": "🛡️", "bg_gradient": "from-red-100 to-red-50", "text_color": "text-red-600", "badge_color": "bg-red-50 text-red-600 border-red-100", "badge_text": "避坑指南"}, "category_name": "避坑指南", "category_slug": "safety"}, {"title": "Claude写论文那个模型最好？Sonnet vs Opus 深度评测", "description": "想要用Claude写论文却不知道选哪个模型？本文深度解析Claude 3.5 Sonnet与Opus在学术写作中的表现，附带高效论文写作指令与组合玩法。", "date": "2026-01-28", "url": "/blog/claude-for-academic-writing", "image": "https://claudemai.top/og-cover.svg", "filename": "claude-for-academic-writing.html", "file_path": "/Users/xiaxingyu/Desktop/网站项目/ClaudeMai/blog/claude-for-academic-writing.html", "style": {"icon": "🎓", "bg_gradient": "from-purple-100 to-purple-50", "text_color": "text-purple-600", "badge_color": "bg-purple-50 text-purple-600 border-purple-100", "badge_text": "学术科研"}, "category_name": "学术科研", "category_slug": "academic"}, {"title": "Claude Code是干嘛的？你的全能AI技术合伙人", "description": "Claude Code远不止一个编程工具，它更像一个全能的AI个人助理。本文详解Claude Code的核心功能、Agent代理机制以及如何安装使用。", "date": "2026-01-28", "url": "/blog/what-is-claude-code", "image": "https://claudemai.top/og-cover.svg", "filename": "what-is-claude-code.html", "file_path": "/Users/xiaxingyu/Desktop/网站项目/ClaudeMai/blog/what-is-claude-code.html", "style": {"icon": "⚡", "bg_gradient": "from-sky-100 to-sky-50", "text_color": "text-sky-600", "badge_color": "bg-sky-50 text-sky-600 border-sky-100", "badge_text": "效率工具"}, "category_name": "效率工具", "category_slug": "tools"}, {"title": "Claude是干嘛的？全能AI助手深度解析", "description": "Claude是一个功能强大的人工智能助手，不仅能回答问题、创作文字，还能像数字员工一样完成写作、编程和数据分析任务。本文深度解析Claude的核心功能与Skills技能。", "date": "2026-01-13", "url": "/blog/what-is-claude", "image": "https://claudemai.top/og-cover.svg", "filename": "what-is-claude.html", "file_path": "/Users/xiaxingyu/Desktop/网站项目/ClaudeMai/blog/what-is-claude.html", "style": {"icon": "🤖", "bg_gradient": "from-orange-100 to-orange-50", "text_color": "text-orange-600", "badge_color": "bg-orange-50 text-orange-600 border-orange-100", "badge_text": "入门指南"}, "category_name": "入门指南", "category_slug": "tutorial"}, {"title": "Claude和ChatGPT写代码哪个好？程序员实测对比", "description": "深度对比Claude和ChatGPT在编程领域的表现。Claude更像执行力强的“技术工人”，适合快速生成代码；ChatGPT更像思路清晰的“技术总监”，擅长架构设计与审查。教你如何组合使用两者最大化效率。", "date": "2026-01-13", "url": "/blog/claude-vs-chatgpt-coding", "image": "https://claudemai.top/og-cover.svg", "filename": "claude-vs-chatgpt-coding.html", "file_path": "/Users/xiaxingyu/Desktop/网站项目/ClaudeMai/blog/claude-vs-chatgpt-coding.html", "style": {"icon": "⚖️", "bg_gradient": "from-teal-100 to-teal-50", "text_color": "text-teal-600", "badge_color": "bg-teal-50 text-teal-600 border-teal-100", "badge_text": "深度评测"}, "category_name": "深度评测", "category_slug": "reviews"}];
+        const CATEGORIES = [{"slug": "all", "name": "全部", "count": 10}, {"slug": "tutorial", "name": "新手必读", "count": 3}, {"slug": "safety", "name": "避坑指南", "count": 2}, {"slug": "academic", "name": "学术科研", "count": 1}, {"slug": "reviews", "name": "深度评测", "count": 1}, {"slug": "tools", "name": "效率工具", "count": 1}, {"slug": "models", "name": "旗舰模型", "count": 1}, {"slug": "pricing", "name": "购买指南", "count": 1}];
+        const POSTS_PER_PAGE = 6;
+        
+        let state = {
+            category: 'all',
+            page: 1,
+            search: ''
+        };
+
+        // Init
+        document.addEventListener('DOMContentLoaded', () => {
+            // Restore state from URL
+            const params = new URLSearchParams(window.location.search);
+            if(params.has('category')) state.category = params.get('category');
+            if(params.has('page')) state.page = parseInt(params.get('page'));
+            if(params.has('search')) state.search = params.get('search');
+            
+            document.getElementById('searchInput').value = state.search;
+            
+            render();
+            
+            // Listeners
+            document.getElementById('searchInput').addEventListener('input', (e) => {
+                state.search = e.target.value.toLowerCase();
+                state.page = 1;
+                updateURL();
+                render();
+            });
+        });
+
+        function updateURL() {
+            const url = new URL(window.location);
+            if(state.category !== 'all') url.searchParams.set('category', state.category);
+            else url.searchParams.delete('category');
+            
+            if(state.page > 1) url.searchParams.set('page', state.page);
+            else url.searchParams.delete('page');
+            
+            if(state.search) url.searchParams.set('search', state.search);
+            else url.searchParams.delete('search');
+            
+            window.history.pushState({}, '', url);
+        }
+
+        function setCategory(slug) {
+            state.category = slug;
+            state.page = 1;
+            updateURL();
+            render();
+        }
+
+        function setPage(p) {
+            state.page = p;
+            updateURL();
+            render();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function render() {
+            renderCategories();
+            
+            // Filter
+            let filtered = POSTS.filter(p => {
+                const matchCat = state.category === 'all' || p.category_slug === state.category;
+                const matchSearch = !state.search || 
+                    p.title.toLowerCase().includes(state.search) || 
+                    p.description.toLowerCase().includes(state.search);
+                return matchCat && matchSearch;
+            });
+            
+            // Paginate
+            const totalPages = Math.ceil(filtered.length / POSTS_PER_PAGE) || 1;
+            if (state.page > totalPages) state.page = 1;
+            
+            const start = (state.page - 1) * POSTS_PER_PAGE;
+            const end = start + POSTS_PER_PAGE;
+            const pagePosts = filtered.slice(start, end);
+            
+            renderPosts(pagePosts);
+            renderPagination(state.page, totalPages);
+        }
+
+        function renderCategories() {
+            const container = document.getElementById('categoryContainer');
+            container.innerHTML = CATEGORIES.map(cat => {
+                const isActive = cat.slug === state.category;
+                const baseClass = "px-4 py-2 rounded-full text-sm font-medium transition-colors border cursor-pointer whitespace-nowrap";
+                const activeClass = isActive ? "bg-slate-900 text-white border-slate-900" : "bg-white text-slate-600 border-slate-200 hover:border-slate-300 hover:text-slate-900";
+                return `<button onclick="setCategory('${cat.slug}')" class="${baseClass} ${activeClass}">
+                    ${cat.name}
+                </button>`;
+            }).join('');
+        }
+
+        function renderPosts(posts) {
+            const container = document.getElementById('postsContainer');
+            if (posts.length === 0) {
+                container.innerHTML = `<div class="text-center py-20 text-slate-500">
+                    <p class="text-4xl mb-4">🔍</p>
+                    <p>没有找到相关文章</p>
+                </div>`;
+                return;
+            }
+            
+            container.innerHTML = posts.map(post => {
+                const style = post.style;
+                return `
+                <article class="group bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-all overflow-hidden">
+                    <div class="flex flex-col sm:flex-row h-full">
+                        <div class="sm:w-64 h-48 sm:h-auto bg-gradient-to-br ${style.bg_gradient} flex items-center justify-center relative shrink-0 overflow-hidden">
+                             <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+                             <div class="text-6xl transform group-hover:scale-110 transition-transform duration-300 drop-shadow-sm">${style.icon}</div>
+                        </div>
+                        <div class="p-8 flex flex-col justify-center flex-1">
+                             <div class="flex items-center gap-3 text-sm text-slate-500 mb-3">
+                                  <span class="px-2.5 py-0.5 rounded-full ${style.badge_color} text-xs font-bold border">${post.category_name}</span>
+                                  <span>${post.date}</span>
+                             </div>
+                             <h2 class="text-2xl font-bold text-slate-900 mb-3 group-hover:text-claude-600 transition-colors">
+                                  <a href="${post.url}" class="hover:underline">${post.title}</a>
+                             </h2>
+                             <p class="text-slate-600 leading-relaxed mb-6 line-clamp-3">
+                                  ${post.description}
+                             </p>
+                             <a href="${post.url}" class="inline-flex items-center text-sm font-semibold text-claude-600 hover:text-claude-700">
+                                  阅读全文 <svg class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                             </a>
+                        </div>
+                    </div>
+                </article>`;
+            }).join('');
+        }
+
+        function renderPagination(current, total) {
+            const container = document.getElementById('paginationContainer');
+            if (total <= 1) {
+                container.innerHTML = '';
+                return;
+            }
+            
+            let html = '';
+            // Prev
+            if (current > 1) {
+                html += `<button onclick="setPage(${current - 1})" class="px-4 py-2 text-sm font-medium text-slate-600 bg-white rounded-lg border border-slate-200 hover:bg-slate-50">上一页</button>`;
+            } else {
+                html += `<span class="px-4 py-2 text-sm font-medium text-slate-400 bg-slate-50 rounded-lg border border-slate-200 cursor-not-allowed">上一页</span>`;
+            }
+            
+            // Pages
+            for(let i=1; i<=total; i++) {
+                if(i === current) {
+                    html += `<span class="px-4 py-2 text-sm font-medium text-white bg-claude-600 rounded-lg shadow-sm shadow-claude-600/30">${i}</span>`;
+                } else {
+                    html += `<button onclick="setPage(${i})" class="px-4 py-2 text-sm font-medium text-slate-600 bg-white rounded-lg border border-slate-200 hover:bg-slate-50">${i}</button>`;
+                }
+            }
+            
+            // Next
+            if (current < total) {
+                html += `<button onclick="setPage(${current + 1})" class="px-4 py-2 text-sm font-medium text-slate-600 bg-white rounded-lg border border-slate-200 hover:bg-slate-50">下一页</button>`;
+            } else {
+                html += `<span class="px-4 py-2 text-sm font-medium text-slate-400 bg-slate-50 rounded-lg border border-slate-200 cursor-not-allowed">下一页</span>`;
+            }
+            
+            container.innerHTML = html;
+        }
+  </script>
  </body>
 </html>
