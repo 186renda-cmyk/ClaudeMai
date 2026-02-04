@@ -18,18 +18,28 @@ POSTS_PER_PAGE = 6
 
 # Helper for Slug Generation (Automated approach)
 SLUG_MAPPING = {
-    "学术科研": "academic",
-    "避坑指南": "safety",
-    "深度评测": "reviews",
-    "旗舰模型": "models",
-    "购买指南": "pricing",
+    # 1. Tutorial / Guide (新手必读)
     "注册教程": "tutorial",
-    "新手必读": "tutorial", # Merged into tutorial
-    "入门指南": "tutorial", # Merged into tutorial
+    "新手必读": "tutorial",
+    "入门指南": "tutorial",
+    "购买指南": "tutorial",
+    "使用教程": "tutorial",
+    
+    # 2. Safety (避坑指南)
+    "避坑指南": "safety",
+    
+    # 3. Tools / Efficiency (效率工具)
     "效率工具": "tools",
-    "编程开发": "coding",
-    "资讯": "news",
-    "使用教程": "guide"
+    "编程开发": "tools",
+    "学术科研": "tools",
+    "前沿技术": "tools",
+    
+    # 4. Reviews / Models (深度评测)
+    "深度评测": "reviews",
+    "旗舰模型": "reviews",
+    
+    # 5. News (资讯)
+    "资讯": "news"
 }
 
 SLUG_DISPLAY_NAMES = {
@@ -161,7 +171,7 @@ class SiteBuilder:
             desc_tag = soup.find('meta', attrs={'name': 'description'})
             description = desc_tag['content'].strip() if desc_tag and desc_tag.get('content') else ''
 
-            date_str = datetime.now().strftime('%Y-%m-%d')
+            date_str = None
             json_scripts = soup.find_all('script', type='application/ld+json')
             for script in json_scripts:
                 try:
@@ -175,8 +185,8 @@ class SiteBuilder:
                          if data.get('@type') == 'BlogPosting' and data.get('datePublished'):
                             date_str = data['datePublished']
                 except: pass
-            
-            if date_str == datetime.now().strftime('%Y-%m-%d'):
+            if not date_str:
+                date_str = datetime.now().strftime('%Y-%m-%d')
                 date_pattern = re.compile(r'\d{4}-\d{2}-\d{2}')
                 text_nodes = soup.find_all(string=date_pattern)
                 for node in text_nodes:
@@ -294,6 +304,13 @@ class SiteBuilder:
         original_main = original_soup.find('main')
         if original_main:
             self.process_links(original_main)
+            
+            # Sync visual date with metadata date
+            time_tag = original_main.find('time', itemprop='datePublished')
+            if time_tag:
+                time_tag['datetime'] = post['date']
+                time_tag.string = post['date']
+
             article = original_main.find('article')
             if article:
                 for div in article.find_all('div', class_='mt-12 pt-8 border-t border-slate-200'):
@@ -330,7 +347,9 @@ class SiteBuilder:
             if 'register' in filename: return {"icon": "🆔", "bg_gradient": "from-emerald-100 to-emerald-50", "text_color": "text-emerald-600", "badge_color": "bg-emerald-50 text-emerald-600 border-emerald-100", "badge_text": "注册教程"}
             if 'how-to' in filename: return {"icon": "🧭", "bg_gradient": "from-amber-100 to-amber-50", "text_color": "text-amber-600", "badge_color": "bg-amber-50 text-amber-600 border-amber-100", "badge_text": "新手必读"}
             if 'opus' in filename: return {"icon": "🧠", "bg_gradient": "from-purple-100 to-purple-50", "text_color": "text-purple-600", "badge_color": "bg-purple-50 text-purple-600 border-purple-100", "badge_text": "旗舰模型"}
+            if 'what-is-claude-agent' in filename: return {"icon": "🕵️", "bg_gradient": "from-slate-100 to-slate-50", "text_color": "text-slate-600", "badge_color": "bg-slate-50 text-slate-600 border-slate-100", "badge_text": "前沿技术"}
             if 'code' in filename: return {"icon": "⚡", "bg_gradient": "from-sky-100 to-sky-50", "text_color": "text-sky-600", "badge_color": "bg-sky-50 text-sky-600 border-sky-100", "badge_text": "效率工具"}
+            if 'what-is-claude-for-excel' in filename: return {"icon": "📊", "bg_gradient": "from-green-100 to-green-50", "text_color": "text-green-600", "badge_color": "bg-green-50 text-green-600 border-green-100", "badge_text": "效率工具"}
             if 'what-is' in filename: return {"icon": "🤖", "bg_gradient": "from-orange-100 to-orange-50", "text_color": "text-orange-600", "badge_color": "bg-orange-50 text-orange-600 border-orange-100", "badge_text": "入门指南"}
 
         style = {"icon": "📄", "bg_gradient": "from-gray-100 to-gray-50", "text_color": "text-gray-600", "badge_color": "bg-gray-100 text-gray-600 border-gray-100", "badge_text": "资讯"}
@@ -398,8 +417,15 @@ class SiteBuilder:
             <!-- Injected by JS -->
         </div>
         """
+        
+        # Generate static fallback for SEO/No-JS
+        noscript_html = '<noscript><div class="prose max-w-none mt-8"><h2>所有文章</h2><ul class="space-y-2">'
+        for post in self.posts_metadata:
+            noscript_html += f'<li><a href="{post["url"]}" class="text-claude-600 hover:underline">{post["title"]}</a> <span class="text-slate-400 text-sm">({post["date"]})</span></li>'
+        noscript_html += '</ul></div></noscript>'
+
         if article_container:
-            article_container.append(BeautifulSoup(ui_html, 'html.parser'))
+            article_container.append(BeautifulSoup(ui_html + noscript_html, 'html.parser'))
 
         # 3. Clean sidebar (Remove static categories)
         self.update_sidebar(soup)
