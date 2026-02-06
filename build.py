@@ -92,9 +92,8 @@ class SiteBuilder:
         print("Phase 4: Generating sitemap.xml...")
         self.generate_sitemap()
         
-        print("✅ Build completed successfully.")
+        print(f"✅ Build completed successfully at {datetime.now().strftime('%H:%M:%S')}")
 
-    # ... (clean_link, standardize_url, process_links, extract_assets methods remain same)
     def clean_link(self, url):
         if not url: return url
         if url.startswith('#') or url.startswith('http'): return url
@@ -185,13 +184,19 @@ class SiteBuilder:
                          if data.get('@type') == 'BlogPosting' and data.get('datePublished'):
                             date_str = data['datePublished']
                 except: pass
+            
+            if date_str:
+                print(f"    Found date in JSON-LD: {date_str}")
+            
             if not date_str:
                 date_str = datetime.now().strftime('%Y-%m-%d')
+                print(f"    No JSON-LD date found. Defaulting to today: {date_str}")
                 date_pattern = re.compile(r'\d{4}-\d{2}-\d{2}')
                 text_nodes = soup.find_all(string=date_pattern)
                 for node in text_nodes:
                     if node.parent.name not in ['script', 'style', 'head', 'title', 'meta']:
                         date_str = node.strip()
+                        print(f"    Found date in text content: {date_str}")
                         break
             
             date_match = re.search(r'\d{4}-\d{2}-\d{2}', str(date_str))
@@ -237,7 +242,6 @@ class SiteBuilder:
             self.reconstruct_page(post)
 
     def reconstruct_page(self, post):
-        # ... (Same as before, reusing logic)
         file_path = post['file_path']
         with open(file_path, 'r', encoding='utf-8') as f:
             original_soup = BeautifulSoup(f.read(), 'html.parser')
@@ -286,7 +290,7 @@ class SiteBuilder:
         style_tag = original_soup.find('style')
         if style_tag: head.append(style_tag)
 
-        # Schema (Simplified for brevity in this tool call)
+        # Schema
         schema_data = {
             "@context": "https://schema.org", "@type": "BlogPosting",
             "headline": post['title'], "description": post['description'], "datePublished": post['date'],
@@ -337,7 +341,6 @@ class SiteBuilder:
         return html
 
     def determine_post_style(self, title, filename=""):
-        # (Logic same as before, condensed for brevity)
         title = title.lower()
         if filename:
             if 'academic' in filename: return {"icon": "🎓", "bg_gradient": "from-purple-100 to-purple-50", "text_color": "text-purple-600", "badge_color": "bg-purple-50 text-purple-600 border-purple-100", "badge_text": "学术科研"}
@@ -347,7 +350,22 @@ class SiteBuilder:
             if 'register' in filename: return {"icon": "🆔", "bg_gradient": "from-emerald-100 to-emerald-50", "text_color": "text-emerald-600", "badge_color": "bg-emerald-50 text-emerald-600 border-emerald-100", "badge_text": "注册教程"}
             if 'how-to' in filename: return {"icon": "🧭", "bg_gradient": "from-amber-100 to-amber-50", "text_color": "text-amber-600", "badge_color": "bg-amber-50 text-amber-600 border-amber-100", "badge_text": "新手必读"}
             if 'opus' in filename: return {"icon": "🧠", "bg_gradient": "from-purple-100 to-purple-50", "text_color": "text-purple-600", "badge_color": "bg-purple-50 text-purple-600 border-purple-100", "badge_text": "旗舰模型"}
-            if 'what-is-claude-agent' in filename: return {"icon": "🕵️", "bg_gradient": "from-slate-100 to-slate-50", "text_color": "text-slate-600", "badge_color": "bg-slate-50 text-slate-600 border-slate-100", "badge_text": "前沿技术"}
+            elif 'what-is-claude-skills' in filename:
+                return {
+                    "icon": "🧩", 
+                    "bg_gradient": "from-indigo-100 to-indigo-50",
+                    "text_color": "text-indigo-600",
+                    "badge_color": "bg-indigo-50 text-indigo-600 border-indigo-100",
+                    "badge_text": "前沿技术"
+                }
+            elif 'what-is-claude-agent' in filename:
+                return {
+                    "icon": "🕵️", 
+                    "bg_gradient": "from-slate-100 to-slate-50",
+                    "text_color": "text-slate-600",
+                    "badge_color": "bg-slate-50 text-slate-600 border-slate-100",
+                    "badge_text": "前沿技术"
+                }
             if 'code' in filename: return {"icon": "⚡", "bg_gradient": "from-sky-100 to-sky-50", "text_color": "text-sky-600", "badge_color": "bg-sky-50 text-sky-600 border-sky-100", "badge_text": "效率工具"}
             if 'what-is-claude-for-excel' in filename: return {"icon": "📊", "bg_gradient": "from-green-100 to-green-50", "text_color": "text-green-600", "badge_color": "bg-green-50 text-green-600 border-green-100", "badge_text": "效率工具"}
             if 'what-is' in filename: return {"icon": "🤖", "bg_gradient": "from-orange-100 to-orange-50", "text_color": "text-orange-600", "badge_color": "bg-orange-50 text-orange-600 border-orange-100", "badge_text": "入门指南"}
@@ -649,6 +667,61 @@ class SiteBuilder:
         with open(sitemap_path, 'w', encoding='utf-8') as f: f.write(xml)
         print(f"  Generated sitemap with {len(urls)} URLs.")
 
+def watch_mode():
+    import time
+    from watchdog.observers import Observer
+    from watchdog.events import FileSystemEventHandler
+
+    print("👀 Starting Watch Mode...")
+    print("   Monitoring changes in /blog directory...")
+    print("   Press Ctrl+C to stop.")
+
+    class BuildHandler(FileSystemEventHandler):
+        def __init__(self):
+            self.last_build = 0
+            self.cooldown = 2  # Seconds
+
+        def on_any_event(self, event):
+            if event.is_directory: return
+            if not event.src_path.endswith('.html'): return
+            
+            # Simple debounce
+            now = time.time()
+            if now - self.last_build < self.cooldown: return
+            self.last_build = now
+
+            print(f"\n🔄 File changed: {os.path.basename(event.src_path)}")
+            try:
+                builder = SiteBuilder()
+                builder.run()
+            except Exception as e:
+                print(f"❌ Build failed: {e}")
+
+    observer = Observer()
+    handler = BuildHandler()
+    observer.schedule(handler, BLOG_DIR, recursive=False)
+    # Also watch the script itself
+    observer.schedule(handler, ROOT_DIR, recursive=False)
+    
+    observer.start()
+    try:
+        while True:
+            time.sleep(1)
+    except KeyboardInterrupt:
+        observer.stop()
+    observer.join()
+
 if __name__ == "__main__":
-    builder = SiteBuilder()
-    builder.run()
+    import sys
+    # Install watchdog if missing: pip install watchdog
+    if len(sys.argv) > 1 and sys.argv[1] == '--watch':
+        try:
+            import watchdog
+            watch_mode()
+        except ImportError:
+            print("❌ Watchdog library not found. Please install it first:")
+            print("   pip install watchdog")
+            sys.exit(1)
+    else:
+        builder = SiteBuilder()
+        builder.run()

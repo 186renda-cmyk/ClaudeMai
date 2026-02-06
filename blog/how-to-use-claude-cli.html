@@ -4,11 +4,11 @@
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
   <title>
-   Claude和ChatGPT写代码哪个好？程序员实测对比 - ClaudeMai
+   Claude CLI教程：从安装到实战，终端里的AI编程助手 - ClaudeMai
   </title>
-  <meta content="深度对比Claude和ChatGPT在编程领域的表现。Claude更像执行力强的“技术工人”，适合快速生成代码；ChatGPT更像思路清晰的“技术总监”，擅长架构设计与审查。教你如何组合使用两者最大化效率。" name="description"/>
-  <meta content="Claude vs ChatGPT, Claude写代码, ChatGPT编程, Claude Code, AI编程助手, 代码审查, 程序员工具" name="keywords"/>
-  <link href="https://claudemai.top/blog/claude-vs-chatgpt-coding" rel="canonical"/>
+  <meta content="Claude CLI (Claude Code) 是Anthropic推出的命令行AI编程工具。本文提供保姆级安装教程，详解如何配置API Key、使用常用指令进行代码重构、Bug修复及项目分析，助你打造高效终端开发环境。" name="description"/>
+  <meta content="claude cli, claude code cli, claude cli教程, claude ai cli, 终端ai工具, claude pro cline" name="keywords"/>
+  <link href="https://claudemai.top/blog/how-to-use-claude-cli" rel="canonical"/>
   <meta content="index, follow" name="robots"/>
   <link href="https://claudemai.top/logo.svg" rel="icon"/>
   <script src="https://cdn.tailwindcss.com">
@@ -31,20 +31,16 @@
         }
   </script>
   <style>
-   .text-gradient {
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-image: linear-gradient(90deg, #1e293b 0%, #da7756 100%);
-        }
-        /* Blog content styles */
+   /* Shared blog styles */
         .prose h2 {
             font-family: 'Georgia', 'serif';
             font-weight: 700;
             color: #1e293b;
-            margin-top: 2rem;
-            margin-bottom: 1rem;
+            margin-top: 2.5rem;
+            margin-bottom: 1.25rem;
             font-size: 1.5rem;
+            border-left: 4px solid #da7756;
+            padding-left: 1rem;
         }
         .prose h3 {
             font-weight: 700;
@@ -54,26 +50,53 @@
             font-size: 1.25rem;
         }
         .prose p {
-            margin-bottom: 1rem;
-            line-height: 1.75;
+            margin-bottom: 1.25rem;
+            line-height: 1.8;
             color: #475569;
         }
         .prose ul {
-            list-style-type: disc;
-            padding-left: 1.5rem;
-            margin-bottom: 1rem;
-            color: #475569;
+            list-style-type: none;
+            padding-left: 0;
+            margin-bottom: 1.5rem;
         }
         .prose li {
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.75rem;
+            position: relative;
+            padding-left: 1.5rem;
+            color: #475569;
+        }
+        .prose li::before {
+            content: "•";
+            color: #da7756;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            top: 0;
         }
         .prose strong {
             color: #1e293b;
             font-weight: 600;
         }
+        .highlight-box {
+            background-color: #fff7ed;
+            border: 1px solid #ffedd5;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .code-block {
+            background-color: #0f172a;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            overflow-x: auto;
+            color: #f8fafc;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+        }
   </style>
   <script type="application/ld+json">
-   {"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Claude和ChatGPT写代码哪个好？程序员实测对比", "description": "深度对比Claude和ChatGPT在编程领域的表现。Claude更像执行力强的“技术工人”，适合快速生成代码；ChatGPT更像思路清晰的“技术总监”，擅长架构设计与审查。教你如何组合使用两者最大化效率。", "datePublished": "2026-01-13", "author": {"@type": "Organization", "name": "ClaudeMai"}}
+   {"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Claude CLI教程：从安装到实战，终端里的AI编程助手", "description": "Claude CLI (Claude Code) 是Anthropic推出的命令行AI编程工具。本文提供保姆级安装教程，详解如何配置API Key、使用常用指令进行代码重构、Bug修复及项目分析，助你打造高效终端开发环境。", "datePublished": "2026-02-06", "author": {"@type": "Organization", "name": "ClaudeMai"}}
   </script>
  </head>
  <body class="bg-slate-50 text-slate-900 font-sans antialiased selection:bg-claude-600 selection:text-white">
@@ -121,7 +144,7 @@
   </nav>
   <main class="pt-32 pb-20 sm:pt-40 sm:pb-24">
    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <!-- Breadcrumb -->
+    <!-- Breadcrumb Navigation -->
     <nav aria-label="Breadcrumb" class="flex mb-8 text-sm text-slate-500">
      <ol class="flex items-center flex-wrap" itemscope="" itemtype="http://schema.org/BreadcrumbList">
       <li itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
@@ -148,267 +171,242 @@
       </li>
       <li itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
        <span aria-current="page" class="text-slate-800 font-medium" itemprop="name">
-        Claude vs ChatGPT 编程对比
+        Claude CLI 实战教程
        </span>
        <meta content="3" itemprop="position"/>
       </li>
      </ol>
     </nav>
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
-     <!-- Main Content -->
+     <!-- Main Article Content -->
      <div class="lg:col-span-8">
-      <article class="prose prose-slate lg:prose-lg mx-auto bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-slate-200">
-       <h1 class="text-3xl md:text-4xl font-serif font-bold text-slate-900 mb-6">
-        Claude和ChatGPT哪个更适合写代码？
-       </h1>
-       <div class="flex items-center gap-4 mb-8 text-sm text-slate-500 border-b border-slate-100 pb-8">
-        <span class="flex items-center gap-1">
-         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24">
-          <path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-          </path>
-         </svg>
-         2026-01-13
-        </span>
-        <span class="flex items-center gap-1">
-         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24">
-          <path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-          </path>
-         </svg>
-         编程指南
-        </span>
-       </div>
-       <p class="text-lg leading-relaxed mb-8">
-        对于写代码这件事，Claude 和 ChatGPT 并没有绝对的“谁更好”，它们更像是两个不同类型的“AI程序员”，自有鲜明的特点。你可以根据你的具体需求来选择。
-       </p>
-       <div class="my-8 p-6 bg-orange-50 rounded-2xl border border-orange-100 lg:hidden">
-        <h3 class="text-lg font-bold text-orange-800 mb-2">
-         🚀 解锁 Claude Code 编程能力
-        </h3>
-        <p class="text-sm text-orange-700 mb-4">
-         Claude 3.5 Sonnet 模型在编码任务上表现卓越，支持终端直接开发。
-        </p>
-        <a class="inline-flex items-center text-sm font-bold text-orange-600 hover:text-orange-700" href="/#pricing">
-         获取 Pro 账号
-         <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewbox="0 0 24 24">
-          <path d="M17 8l4 4m0 0l-4 4m4-4H3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-          </path>
-         </svg>
-        </a>
-       </div>
-       <h2>
-        Claude：执行能力强的“技术工人”
-       </h2>
-       <p>
-        Claude，特别是它的
-        <strong>
-         Claude Code
-        </strong>
-        和
-        <strong>
-         Sonnet
-        </strong>
-        版本，在执行具体编码任务上非常出色。它就像一个高效的“技术工人”，能快速地根据你的指令写出代码，速度很快，执行力强。
-       </p>
-       <h3>
-        优点：
-       </h3>
-       <ul>
-        <li>
-         <strong>
-          写代码快：
-         </strong>
-         能迅速生成代码，适合需要快速实现功能的场景。
-        </li>
-        <li>
-         <strong>
-          指令遵循度高：
-         </strong>
-         通常能很好地理解并执行你的具体要求，不容易跑偏。
-        </li>
-        <li>
-         <strong>
-          代码调试：
-         </strong>
-         新版的 Claude Sonnet 4.5 在代码调试和优化方面能力很强，能主动找出 bug 并提出优化方案。
-        </li>
-       </ul>
-       <h3>
-        缺点：
-       </h3>
-       <ul>
-        <li>
-         <strong>
-          容易出错：
-         </strong>
-         虽然写得快，但生成的代码中可能隐藏着bug 或逻辑问题，需要你仔细审查和测试，不能直接使用。
-        </li>
-        <li>
-         <strong>
-          容易“造轮子”：
-         </strong>
-         有时会倾向于自己实现一些功能，而不是使用现成的库，导致代码复杂度增加。
-        </li>
-       </ul>
-       <h2>
-        ChatGPT：思路清晰的“技术总监”
-       </h2>
-       <p>
-        ChatGPT，尤其是
-        <strong>
-         GPT-5
-        </strong>
-        （或最新版 GPT-4o），更像一个经验丰富的“技术总监”或“博士级顾问”。它的优势在于宏观的架构设计和深度的逻辑分析，而不是具体编码。
-       </p>
-       <h3>
-        优点：
-       </h3>
-       <ul>
-        <li>
-         <strong>
-          架构设计强：
-         </strong>
-         在需求分析、系统设计、解决复杂bug 等方面表现出色，能给出清晰、最优的解决方案。
-        </li>
-        <li>
-         <strong>
-          代码审查精准：
-         </strong>
-         能发现代码中深层次的问题，并提供高质量的优化建议，是审查和优化代码的绝佳工具。
-        </li>
-        <li>
-         <strong>
-          多模态功能：
-         </strong>
-         如果需要分析图片、文档等，ChatGPT 的多模态功能会更方便。
-        </li>
-       </ul>
-       <h3>
-        缺点：
-       </h3>
-       <ul>
-        <li>
-         <strong>
-          写代码慢：
-         </strong>
-         直接让它写代码时，速度可能不如 Claude，有时甚至会“光说不练”。
-        </li>
-        <li>
-         <strong>
-          幻觉问题：
-         </strong>
-         在某些情况下可能会生成不准确的信息，需要仔细甄别。
-        </li>
-       </ul>
-       <h2>
-        怎么选？以及如何组合使用？
-       </h2>
-       <h3>
-        如果你是“实干派”
-       </h3>
-       <p>
-        需要快速生成大量代码，或者进行批量、重复性的编码任务，
-        <strong>
-         Claude 是你的首选
-        </strong>
-        。但写完后一定要仔细检查！
-       </p>
-       <h3>
-        如果你是“架构师”
-       </h3>
-       <p>
-        更关注系统设计、技术选型、解决复杂难题，或者需要一个能帮你深入分析、审查代码的“军师”，那么
-        <strong>
-         ChatGPT 会更有价值
-        </strong>
-        。
-       </p>
-       <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 my-8">
-        <h3 class="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
-         <span class="text-2xl">
-          💡
+      <article class="prose prose-slate lg:prose-lg mx-auto bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-slate-200" itemscope="" itemtype="http://schema.org/TechArticle">
+       <!-- Article Header -->
+       <header class="mb-8 border-b border-slate-100 pb-8">
+        <h1 class="text-3xl md:text-4xl font-serif font-bold text-slate-900 mb-6" itemprop="headline">
+         Claude CLI教程：从安装到实战，终端里的AI编程助手
+        </h1>
+        <div class="flex items-center gap-4 text-sm text-slate-500">
+         <span class="flex items-center gap-1">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+           <path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+           </path>
+          </svg>
+          <time datetime="2026-02-06" itemprop="datePublished">
+           2026-02-06
+          </time>
          </span>
-         最佳实践：组合拳
-        </h3>
-        <p class="mb-4">
-         很多有经验的开发者会将两者结合使用，发挥 1+1&gt;2 的效果。
+         <span class="flex items-center gap-1">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+           <path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+           </path>
+          </svg>
+          <span itemprop="articleSection">
+           效率工具
+          </span>
+         </span>
+        </div>
+       </header>
+       <!-- Introduction -->
+       <section class="mb-8">
+        <p class="text-lg leading-relaxed">
+         <strong>
+          Claude CLI
+         </strong>
+         （也常被称为 Claude Code CLI）是 Anthropic 公司推出的一款专为开发者设计的终端神器。它将 Claude 强大的 AI 能力直接集成到了命令行界面中，让你无需离开终端就能进行代码生成、Bug 修复、文件分析等操作。
         </p>
-        <ul class="space-y-2">
-         <li class="flex items-start gap-2">
-          <span class="bg-orange-100 text-orange-600 rounded px-2 py-0.5 text-xs font-bold mt-1">
-           Step 1
-          </span>
-          <span>
-           <strong>
-            Claude 写初稿：
-           </strong>
-           让 Claude 快速生成代码，利用它的高效率完成“体力活”。
-          </span>
-         </li>
-         <li class="flex items-start gap-2">
-          <span class="bg-blue-100 text-blue-600 rounded px-2 py-0.5 text-xs font-bold mt-1">
-           Step 2
-          </span>
-          <span>
-           <strong>
-            ChatGPT 审核优化：
-           </strong>
-           将 Claude 生成的代码交给 ChatGPT 进行审查，让它找出潜在问题并提出优化方案。
-          </span>
-         </li>
-         <li class="flex items-start gap-2">
-          <span class="bg-purple-100 text-purple-600 rounded px-2 py-0.5 text-xs font-bold mt-1">
-           Bonus
-          </span>
-          <span>
-           <strong>
-            Gemini 作为补充：
-           </strong>
-           对于需要分析整个代码库的场景，可以借助 Gemini 超长的上下文窗口能力。
-          </span>
-         </li>
-        </ul>
-       </div>
-       <p class="text-lg font-medium text-slate-800">
-        总的来说，Claude 更适合“写”，而 ChatGPT 更适合“审”。根据你的任务类型和对代码质量的要求，选择合适的工具，或者将它们组合起来，才能最大化 AI 在编程中的价值。
-       </p>
-       <div class="mt-12 pt-8 border-t border-slate-200 text-center">
-        <h3 class="text-2xl font-bold text-slate-900 mb-4">
-         想体验 Claude 强大的代码能力？
-        </h3>
-        <p class="text-slate-600 mb-8">
-         立即获取 Claude Pro 独享账号，支持 Claude Code 终端开发与 200K 长文本。
+        <p>
+         对于习惯使用终端的程序员来说，Claude CLI 就像是一个随时待命的结对编程伙伴。它不仅能理解你的自然语言指令，还能直接读取本地项目文件，生成 diff 差异，甚至帮你执行 git 操作。
         </p>
-        <a class="inline-flex items-center justify-center px-8 py-3.5 rounded-xl bg-claude-600 text-white font-semibold shadow-lg hover:bg-claude-700 hover:shadow-claude-600/30 transition-all transform hover:-translate-y-0.5" href="/#pricing">
-         立即购买 Claude Pro
-        </a>
-       </div>
+        <!-- Promotion Card -->
+        <div class="my-8 p-6 bg-blue-50 rounded-2xl border border-blue-100 lg:hidden">
+         <h3 class="text-lg font-bold text-blue-800 mb-2">
+          ⚡ 需要 Claude Pro 账号？
+         </h3>
+         <p class="text-sm text-blue-700 mb-4">
+          使用 Claude CLI 需要 Pro 及以上权限。我们提供稳定独享的成品号与代充服务。
+         </p>
+         <a class="inline-flex items-center text-sm font-bold text-blue-600 hover:text-blue-700" href="/#pricing">
+          获取 Claude Pro
+          <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+           <path d="M17 8l4 4m0 0l-4 4m4-4H3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+           </path>
+          </svg>
+         </a>
+        </div>
+       </section>
+       <!-- Section 1: Installation -->
+       <section id="installation">
+        <h2>
+         一、 环境准备与安装
+        </h2>
+        <p>
+         Claude CLI 基于 Node.js 开发，因此安装非常简单。
+        </p>
+        <h3>
+         1. 前置要求
+        </h3>
+        <div class="highlight-box">
+         <ul class="!mb-0">
+          <li>
+           <strong>
+            Node.js:
+           </strong>
+           版本需 ≥ 18.0.0
+          </li>
+          <li>
+           <strong>
+            Git:
+           </strong>
+           建议安装，以便 CLI 进行版本控制操作
+          </li>
+          <li>
+           <strong>
+            账号:
+           </strong>
+           需要 Claude Pro、Team 或 Enterprise 账号权限
+          </li>
+         </ul>
+        </div>
+        <h3>
+         2. 安装命令
+        </h3>
+        <p>
+         打开你的终端（Terminal、iTerm2 或 PowerShell），运行以下 npm 命令进行全局安装：
+        </p>
+        <div class="code-block">
+         npm install -g @anthropic-ai/claude-code
+        </div>
+        <p>
+         安装完成后，可以通过以下命令验证是否成功：
+        </p>
+        <div class="code-block">
+         claude --version
+        </div>
+       </section>
+       <!-- Section 2: Auth -->
+       <section id="auth">
+        <h2>
+         二、 认证与配置
+        </h2>
+        <p>
+         安装完成后，你需要登录才能使用。Claude CLI 提供了两种认证方式：
+        </p>
+        <h3>
+         方式一：交互式登录（推荐）
+        </h3>
+        <p>
+         在终端输入：
+        </p>
+        <div class="code-block">
+         claude login
+        </div>
+        <p>
+         CLI 会自动打开浏览器引导你进行授权。登录成功后，终端会提示认证完成，你就可以开始使用了。
+        </p>
+        <h3>
+         方式二：API Key 环境变量
+        </h3>
+        <p>
+         如果你在服务器或 CI/CD 环境中使用，可以通过设置环境变量来认证。
+        </p>
+        <div class="code-block">
+         # Linux / macOS
+export ANTHROPIC_API_KEY="sk-ant-api03-..."
+
+# Windows PowerShell
+$env:ANTHROPIC_API_KEY="sk-ant-api03-..."
+        </div>
+       </section>
+       <!-- Section 3: Basic Usage -->
+       <section id="usage">
+        <h2>
+         三、 基础指令实战
+        </h2>
+        <h3>
+         1. 单次提问
+        </h3>
+        <p>
+         最简单的用法是直接在命令后跟上你的问题：
+        </p>
+        <div class="code-block">
+         claude "解释当前目录下的 package.json 文件依赖"
+        </div>
+        <h3>
+         2. 多行交互模式
+        </h3>
+        <p>
+         如果你需要输入一段复杂的 prompt，或者粘贴代码片段，可以使用多行模式：
+        </p>
+        <div class="code-block">
+         claude &lt;&lt;EOF
+请帮我重构 src/utils.js 文件。
+要求：
+1. 将所有 var 替换为 let 或 const
+2. 提取公共函数到 helpers.js
+EOF
+        </div>
+        <h3>
+         3. 进入项目上下文
+        </h3>
+        <p>
+         Claude CLI 会自动感知当前所在的目录。当你进入一个 Git 项目时，它会自动理解项目的结构。
+        </p>
+        <div class="code-block">
+         cd my-react-project
+claude "分析这个项目的组件架构"
+        </div>
+       </section>
+       <!-- Section 4: Advanced Scenarios -->
+       <section id="advanced">
+        <h2>
+         四、 高阶开发场景
+        </h2>
+        <p>
+         Claude CLI 的真正强大之处在于它能“读写”文件，协助你完成复杂的开发任务。
+        </p>
+        <h3>
+         1. 自动化代码重构
+        </h3>
+        <p>
+         你可以让 Claude 分析代码质量并直接提出修改建议：
+        </p>
+        <div class="code-block">
+         claude "检查 src/api 目录下的错误处理逻辑，并为所有异步请求添加 try-catch"
+        </div>
+        <h3>
+         2. 生成 Git Commit Message
+        </h3>
+        <p>
+         写完代码懒得写提交信息？
+        </p>
+        <div class="code-block">
+         claude "根据 git diff 生成一个符合 Conventional Commits 规范的提交信息"
+        </div>
+        <h3>
+         3. 自动修复 Bug
+        </h3>
+        <p>
+         当测试报错时，你可以直接把报错信息喂给它：
+        </p>
+        <div class="code-block">
+         npm test &gt; error.log
+claude "读取 error.log，分析测试失败原因，并给出修复 src/Login.js 的具体代码"
+        </div>
+       </section>
+       <footer class="mt-12 pt-8 border-t border-slate-200">
+        <p class="text-slate-600 italic">
+         <strong>
+          总结：
+         </strong>
+         Claude CLI 将 AI 的智慧带入了开发者最熟悉的终端环境。它不仅是一个问答机器人，更是一个能帮你读代码、改代码、写文档的全能助手。配合 Claude Pro 账号，它将成为你编程路上最得力的技术合伙人。
+        </p>
+       </footer>
        <div class="mt-12 pt-8 border-t border-slate-200">
         <h3 class="text-xl font-bold text-slate-900 mb-6">
          推荐阅读
         </h3>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-         <a class="group bg-white rounded-xl border border-slate-200 overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300" href="/blog/how-to-use-claude-cli">
-          <div class="h-32 bg-gradient-to-br from-amber-100 to-amber-50 flex items-center justify-center relative overflow-hidden">
-           <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]">
-           </div>
-           <div class="text-4xl transform group-hover:scale-110 transition-transform duration-300 drop-shadow-sm">
-            🧭
-           </div>
-          </div>
-          <div class="p-4">
-           <div class="flex items-center gap-2 mb-2">
-            <span class="px-2 py-0.5 rounded-full bg-amber-50 text-amber-600 border-amber-100 text-[10px] font-bold border">
-             新手必读
-            </span>
-            <span class="text-slate-400 text-xs">
-             2026-02-06
-            </span>
-           </div>
-           <h4 class="font-bold text-slate-900 group-hover:text-claude-600 transition-colors mb-2 line-clamp-2 text-sm md:text-base">
-            Claude CLI教程：从安装到实战，终端里的AI编程助手
-           </h4>
-          </div>
-         </a>
          <a class="group bg-white rounded-xl border border-slate-200 overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300" href="/blog/what-is-claude-skills">
           <div class="h-32 bg-gradient-to-br from-indigo-100 to-indigo-50 flex items-center justify-center relative overflow-hidden">
            <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]">
@@ -450,6 +448,28 @@
            </div>
            <h4 class="font-bold text-slate-900 group-hover:text-claude-600 transition-colors mb-2 line-clamp-2 text-sm md:text-base">
             Claude Agent是什么？从零开始构建你的AI智能体
+           </h4>
+          </div>
+         </a>
+         <a class="group bg-white rounded-xl border border-slate-200 overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300" href="/blog/what-is-claude-for-excel">
+          <div class="h-32 bg-gradient-to-br from-green-100 to-green-50 flex items-center justify-center relative overflow-hidden">
+           <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]">
+           </div>
+           <div class="text-4xl transform group-hover:scale-110 transition-transform duration-300 drop-shadow-sm">
+            📊
+           </div>
+          </div>
+          <div class="p-4">
+           <div class="flex items-center gap-2 mb-2">
+            <span class="px-2 py-0.5 rounded-full bg-green-50 text-green-600 border-green-100 text-[10px] font-bold border">
+             效率工具
+            </span>
+            <span class="text-slate-400 text-xs">
+             2026-02-04
+            </span>
+           </div>
+           <h4 class="font-bold text-slate-900 group-hover:text-claude-600 transition-colors mb-2 line-clamp-2 text-sm md:text-base">
+            Claude for Excel是什么？如何用AI处理复杂表格
            </h4>
           </div>
          </a>
