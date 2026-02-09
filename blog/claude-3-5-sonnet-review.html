@@ -4,11 +4,11 @@
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
   <title>
-   Claude和ChatGPT写代码哪个好？程序员实测对比 - ClaudeMai
+   Claude 3.5 Sonnet LLM深度评测：目前最强的大语言模型？ - ClaudeMai
   </title>
-  <meta content="深度对比Claude和ChatGPT在编程领域的表现。Claude更像执行力强的“技术工人”，适合快速生成代码；ChatGPT更像思路清晰的“技术总监”，擅长架构设计与审查。教你如何组合使用两者最大化效率。" name="description"/>
-  <meta content="Claude vs ChatGPT, Claude写代码, ChatGPT编程, Claude Code, AI编程助手, 代码审查, 程序员工具" name="keywords"/>
-  <link href="https://claudemai.top/blog/claude-vs-chatgpt-coding" rel="canonical"/>
+  <meta content="Claude 3.5 Sonnet是Anthropic最新发布的旗舰级LLM。本文深度评测其在代码生成、长文本分析及视觉理解上的表现，对比GPT-4o与Gemini Pro，助你选择最适合的AI模型。" name="description"/>
+  <meta content="claude llm, claude 3.5 sonnet, claude 3.5 sonnet llm, claude 3.5 sonnet api, 最强llm模型, ai模型对比" name="keywords"/>
+  <link href="https://claudemai.top/blog/claude-3-5-sonnet-review" rel="canonical"/>
   <meta content="index, follow" name="robots"/>
   <link href="https://claudemai.top/logo.svg" rel="icon"/>
   <script src="https://cdn.tailwindcss.com">
@@ -31,20 +31,16 @@
         }
   </script>
   <style>
-   .text-gradient {
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-image: linear-gradient(90deg, #1e293b 0%, #da7756 100%);
-        }
-        /* Blog content styles */
+   /* Shared blog styles */
         .prose h2 {
             font-family: 'Georgia', 'serif';
             font-weight: 700;
             color: #1e293b;
-            margin-top: 2rem;
-            margin-bottom: 1rem;
+            margin-top: 2.5rem;
+            margin-bottom: 1.25rem;
             font-size: 1.5rem;
+            border-left: 4px solid #da7756;
+            padding-left: 1rem;
         }
         .prose h3 {
             font-weight: 700;
@@ -54,26 +50,53 @@
             font-size: 1.25rem;
         }
         .prose p {
-            margin-bottom: 1rem;
-            line-height: 1.75;
+            margin-bottom: 1.25rem;
+            line-height: 1.8;
             color: #475569;
         }
         .prose ul {
-            list-style-type: disc;
-            padding-left: 1.5rem;
-            margin-bottom: 1rem;
-            color: #475569;
+            list-style-type: none;
+            padding-left: 0;
+            margin-bottom: 1.5rem;
         }
         .prose li {
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.75rem;
+            position: relative;
+            padding-left: 1.5rem;
+            color: #475569;
+        }
+        .prose li::before {
+            content: "•";
+            color: #da7756;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            top: 0;
         }
         .prose strong {
             color: #1e293b;
             font-weight: 600;
         }
+        .highlight-box {
+            background-color: #fff7ed;
+            border: 1px solid #ffedd5;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .code-block {
+            background-color: #0f172a;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            overflow-x: auto;
+            color: #f8fafc;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+        }
   </style>
   <script type="application/ld+json">
-   {"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Claude和ChatGPT写代码哪个好？程序员实测对比", "description": "深度对比Claude和ChatGPT在编程领域的表现。Claude更像执行力强的“技术工人”，适合快速生成代码；ChatGPT更像思路清晰的“技术总监”，擅长架构设计与审查。教你如何组合使用两者最大化效率。", "datePublished": "2026-01-13", "author": {"@type": "Organization", "name": "ClaudeMai"}}
+   {"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Claude 3.5 Sonnet LLM深度评测：目前最强的大语言模型？", "description": "Claude 3.5 Sonnet是Anthropic最新发布的旗舰级LLM。本文深度评测其在代码生成、长文本分析及视觉理解上的表现，对比GPT-4o与Gemini Pro，助你选择最适合的AI模型。", "datePublished": "2026-02-09", "author": {"@type": "Organization", "name": "ClaudeMai"}}
   </script>
  </head>
  <body class="bg-slate-50 text-slate-900 font-sans antialiased selection:bg-claude-600 selection:text-white">
@@ -121,7 +144,7 @@
   </nav>
   <main class="pt-32 pb-20 sm:pt-40 sm:pb-24">
    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <!-- Breadcrumb -->
+    <!-- Breadcrumb Navigation -->
     <nav aria-label="Breadcrumb" class="flex mb-8 text-sm text-slate-500">
      <ol class="flex items-center flex-wrap" itemscope="" itemtype="http://schema.org/BreadcrumbList">
       <li itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
@@ -148,267 +171,213 @@
       </li>
       <li itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
        <span aria-current="page" class="text-slate-800 font-medium" itemprop="name">
-        Claude vs ChatGPT 编程对比
+        Claude 3.5 Sonnet 深度评测
        </span>
        <meta content="3" itemprop="position"/>
       </li>
      </ol>
     </nav>
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
-     <!-- Main Content -->
+     <!-- Main Article Content -->
      <div class="lg:col-span-8">
-      <article class="prose prose-slate lg:prose-lg mx-auto bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-slate-200">
-       <h1 class="text-3xl md:text-4xl font-serif font-bold text-slate-900 mb-6">
-        Claude和ChatGPT哪个更适合写代码？
-       </h1>
-       <div class="flex items-center gap-4 mb-8 text-sm text-slate-500 border-b border-slate-100 pb-8">
-        <span class="flex items-center gap-1">
-         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24">
-          <path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-          </path>
-         </svg>
-         2026-01-13
-        </span>
-        <span class="flex items-center gap-1">
-         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24">
-          <path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-          </path>
-         </svg>
-         编程指南
-        </span>
-       </div>
-       <p class="text-lg leading-relaxed mb-8">
-        对于写代码这件事，Claude 和 ChatGPT 并没有绝对的“谁更好”，它们更像是两个不同类型的“AI程序员”，自有鲜明的特点。你可以根据你的具体需求来选择。
-       </p>
-       <div class="my-8 p-6 bg-orange-50 rounded-2xl border border-orange-100 lg:hidden">
-        <h3 class="text-lg font-bold text-orange-800 mb-2">
-         🚀 解锁 Claude Code 编程能力
-        </h3>
-        <p class="text-sm text-orange-700 mb-4">
-         Claude 3.5 Sonnet 模型在编码任务上表现卓越，支持终端直接开发。
-        </p>
-        <a class="inline-flex items-center text-sm font-bold text-orange-600 hover:text-orange-700" href="/#pricing">
-         获取 Pro 账号
-         <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewbox="0 0 24 24">
-          <path d="M17 8l4 4m0 0l-4 4m4-4H3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-          </path>
-         </svg>
-        </a>
-       </div>
-       <h2>
-        Claude：执行能力强的“技术工人”
-       </h2>
-       <p>
-        Claude，特别是它的
-        <strong>
-         Claude Code
-        </strong>
-        和
-        <strong>
-         Sonnet
-        </strong>
-        版本，在执行具体编码任务上非常出色。它就像一个高效的“技术工人”，能快速地根据你的指令写出代码，速度很快，执行力强。
-       </p>
-       <h3>
-        优点：
-       </h3>
-       <ul>
-        <li>
-         <strong>
-          写代码快：
-         </strong>
-         能迅速生成代码，适合需要快速实现功能的场景。
-        </li>
-        <li>
-         <strong>
-          指令遵循度高：
-         </strong>
-         通常能很好地理解并执行你的具体要求，不容易跑偏。
-        </li>
-        <li>
-         <strong>
-          代码调试：
-         </strong>
-         新版的 Claude Sonnet 4.5 在代码调试和优化方面能力很强，能主动找出 bug 并提出优化方案。
-        </li>
-       </ul>
-       <h3>
-        缺点：
-       </h3>
-       <ul>
-        <li>
-         <strong>
-          容易出错：
-         </strong>
-         虽然写得快，但生成的代码中可能隐藏着bug 或逻辑问题，需要你仔细审查和测试，不能直接使用。
-        </li>
-        <li>
-         <strong>
-          容易“造轮子”：
-         </strong>
-         有时会倾向于自己实现一些功能，而不是使用现成的库，导致代码复杂度增加。
-        </li>
-       </ul>
-       <h2>
-        ChatGPT：思路清晰的“技术总监”
-       </h2>
-       <p>
-        ChatGPT，尤其是
-        <strong>
-         GPT-5
-        </strong>
-        （或最新版 GPT-4o），更像一个经验丰富的“技术总监”或“博士级顾问”。它的优势在于宏观的架构设计和深度的逻辑分析，而不是具体编码。
-       </p>
-       <h3>
-        优点：
-       </h3>
-       <ul>
-        <li>
-         <strong>
-          架构设计强：
-         </strong>
-         在需求分析、系统设计、解决复杂bug 等方面表现出色，能给出清晰、最优的解决方案。
-        </li>
-        <li>
-         <strong>
-          代码审查精准：
-         </strong>
-         能发现代码中深层次的问题，并提供高质量的优化建议，是审查和优化代码的绝佳工具。
-        </li>
-        <li>
-         <strong>
-          多模态功能：
-         </strong>
-         如果需要分析图片、文档等，ChatGPT 的多模态功能会更方便。
-        </li>
-       </ul>
-       <h3>
-        缺点：
-       </h3>
-       <ul>
-        <li>
-         <strong>
-          写代码慢：
-         </strong>
-         直接让它写代码时，速度可能不如 Claude，有时甚至会“光说不练”。
-        </li>
-        <li>
-         <strong>
-          幻觉问题：
-         </strong>
-         在某些情况下可能会生成不准确的信息，需要仔细甄别。
-        </li>
-       </ul>
-       <h2>
-        怎么选？以及如何组合使用？
-       </h2>
-       <h3>
-        如果你是“实干派”
-       </h3>
-       <p>
-        需要快速生成大量代码，或者进行批量、重复性的编码任务，
-        <strong>
-         Claude 是你的首选
-        </strong>
-        。但写完后一定要仔细检查！
-       </p>
-       <h3>
-        如果你是“架构师”
-       </h3>
-       <p>
-        更关注系统设计、技术选型、解决复杂难题，或者需要一个能帮你深入分析、审查代码的“军师”，那么
-        <strong>
-         ChatGPT 会更有价值
-        </strong>
-        。
-       </p>
-       <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 my-8">
-        <h3 class="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
-         <span class="text-2xl">
-          💡
+      <article class="prose prose-slate lg:prose-lg mx-auto bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-slate-200" itemscope="" itemtype="http://schema.org/TechArticle">
+       <!-- Article Header -->
+       <header class="mb-8 border-b border-slate-100 pb-8">
+        <h1 class="text-3xl md:text-4xl font-serif font-bold text-slate-900 mb-6" itemprop="headline">
+         Claude 3.5 Sonnet LLM深度评测：目前最强的大语言模型？
+        </h1>
+        <div class="flex items-center gap-4 text-sm text-slate-500">
+         <span class="flex items-center gap-1">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+           <path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+           </path>
+          </svg>
+          <time datetime="2026-02-09" itemprop="datePublished">
+           2026-02-09
+          </time>
          </span>
-         最佳实践：组合拳
-        </h3>
-        <p class="mb-4">
-         很多有经验的开发者会将两者结合使用，发挥 1+1&gt;2 的效果。
+         <span class="flex items-center gap-1">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+           <path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+           </path>
+          </svg>
+          <span itemprop="articleSection">
+           深度评测
+          </span>
+         </span>
+        </div>
+       </header>
+       <!-- Introduction -->
+       <section class="mb-8">
+        <p class="text-lg leading-relaxed">
+         在 AI 大模型（LLM）的战场上，OpenAI 的 GPT 系列曾长期占据霸主地位。然而，随着
+         <strong>
+          Claude 3.5 Sonnet
+         </strong>
+         的发布，Anthropic 似乎正在改写游戏规则。
         </p>
-        <ul class="space-y-2">
-         <li class="flex items-start gap-2">
-          <span class="bg-orange-100 text-orange-600 rounded px-2 py-0.5 text-xs font-bold mt-1">
-           Step 1
-          </span>
-          <span>
-           <strong>
-            Claude 写初稿：
-           </strong>
-           让 Claude 快速生成代码，利用它的高效率完成“体力活”。
-          </span>
+        <p>
+         作为 Anthropic 的最新旗舰，Claude 3.5 Sonnet 不仅在速度上超越了前代，更在代码能力、视觉理解和长文本处理上展现出了惊人的实力。本文将带你深度剖析这款模型，看看它是否值得成为你的主力 AI 工具。
+        </p>
+        <!-- Promotion Card -->
+        <div class="my-8 p-6 bg-purple-50 rounded-2xl border border-purple-100 lg:hidden">
+         <h3 class="text-lg font-bold text-purple-800 mb-2">
+          ⚡ 立即体验 Claude 3.5 Sonnet
+         </h3>
+         <p class="text-sm text-purple-700 mb-4">
+          Claude Pro 账号可无限畅享 3.5 Sonnet 模型，支持 Artifacts 实时预览功能。
+         </p>
+         <a class="inline-flex items-center text-sm font-bold text-purple-600 hover:text-purple-700" href="/#pricing">
+          获取 Claude Pro
+          <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+           <path d="M17 8l4 4m0 0l-4 4m4-4H3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+           </path>
+          </svg>
+         </a>
+        </div>
+       </section>
+       <!-- Section 1: Core Advantages -->
+       <section id="advantages">
+        <h2>
+         一、 Claude 3.5 Sonnet 的核心优势
+        </h2>
+        <p>
+         Claude 3.5 Sonnet 并不仅仅是一个“升级版”，它在几个关键维度上实现了质的飞跃：
+        </p>
+        <h3>
+         1. 极致的编码能力
+        </h3>
+        <p>
+         对于开发者来说，这可能是最大的惊喜。在 SWE-bench Verified（软件工程能力基准测试）中，Sonnet 的得分遥遥领先。它不仅能写出干净、可运行的代码，还能自主修复 Bug、理解复杂的项目结构。配合最新的 Artifacts 功能，它甚至能实时预览前端代码的效果。
+        </p>
+        <h3>
+         2. 两倍于前代的速度
+        </h3>
+        <p>
+         如果你习惯了 Claude 3 Opus 的“深思熟虑”，你会惊讶于 3.5 Sonnet 的反应速度。它的推理速度是 Opus 的两倍，这意味着在处理实时对话、翻译或代码补全时，你几乎感觉不到延迟。
+        </p>
+        <h3>
+         3. 强大的视觉理解
+        </h3>
+        <p>
+         它是 Anthropic 迄今为止最强的视觉模型。无论是从模糊的截图里提取文字，还是分析复杂的财务图表，Sonnet 都能给出精准的解释。这对于需要处理大量 PDF 扫描件或数据报表的用户来说，绝对是生产力神器。
+        </p>
+       </section>
+       <!-- Section 2: Comparison -->
+       <section id="comparison">
+        <h2>
+         二、 巅峰对决：Claude vs GPT-4o vs Gemini
+        </h2>
+        <p>
+         市面上的 LLM 琳琅满目，到底该怎么选？我们整理了一份简单的决策指南：
+        </p>
+        <div class="overflow-x-auto">
+         <table class="min-w-full bg-white border border-slate-200 rounded-lg overflow-hidden">
+          <thead class="bg-slate-50">
+           <tr>
+            <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+             模型
+            </th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+             核心优势
+            </th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+             最佳应用场景
+            </th>
+           </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-200">
+           <tr>
+            <td class="px-6 py-4 whitespace-nowrap font-medium text-slate-900">
+             Claude 3.5 Sonnet
+            </td>
+            <td class="px-6 py-4 text-slate-600">
+             代码能力顶尖、长文本理解强、逻辑缜密
+            </td>
+            <td class="px-6 py-4 text-slate-600">
+             编程开发、长篇论文写作、复杂文档分析
+            </td>
+           </tr>
+           <tr>
+            <td class="px-6 py-4 whitespace-nowrap font-medium text-slate-900">
+             GPT-4o
+            </td>
+            <td class="px-6 py-4 text-slate-600">
+             综合能力均衡、多模态实时交互
+            </td>
+            <td class="px-6 py-4 text-slate-600">
+             语音/视频实时对话、通用任务处理
+            </td>
+           </tr>
+           <tr>
+            <td class="px-6 py-4 whitespace-nowrap font-medium text-slate-900">
+             Gemini 1.5 Pro
+            </td>
+            <td class="px-6 py-4 text-slate-600">
+             超长上下文窗口（1M+ tokens）、谷歌生态整合
+            </td>
+            <td class="px-6 py-4 text-slate-600">
+             海量数据检索、视频内容分析
+            </td>
+           </tr>
+          </tbody>
+         </table>
+        </div>
+        <div class="highlight-box mt-6">
+         <p class="mb-0">
+          <strong>
+           选购建议：
+          </strong>
+          如果你是程序员、文字工作者或科研人员，需要处理大量文本和代码，
+          <strong>
+           Claude 3.5 Sonnet 是目前的最佳选择
+          </strong>
+          。它的“人味”更重，写出来的文章不像机器生成的，代码逻辑也更严谨。
+         </p>
+        </div>
+       </section>
+       <!-- Section 3: Pricing -->
+       <section id="pricing-info">
+        <h2>
+         三、 如何使用与成本
+        </h2>
+        <p>
+         Claude 3.5 Sonnet 提供了灵活的使用方式：
+        </p>
+        <ul>
+         <li>
+          <strong>
+           免费版：
+          </strong>
+          你可以在 Claude.ai 网页版免费体验，但有每日消息数量限制。
          </li>
-         <li class="flex items-start gap-2">
-          <span class="bg-blue-100 text-blue-600 rounded px-2 py-0.5 text-xs font-bold mt-1">
-           Step 2
-          </span>
-          <span>
-           <strong>
-            ChatGPT 审核优化：
-           </strong>
-           将 Claude 生成的代码交给 ChatGPT 进行审查，让它找出潜在问题并提出优化方案。
-          </span>
+         <li>
+          <strong>
+           Pro 订阅（$20/月）：
+          </strong>
+          解锁 5 倍的使用额度，优先访问高峰期服务，并可创建 Project（知识库）。
          </li>
-         <li class="flex items-start gap-2">
-          <span class="bg-purple-100 text-purple-600 rounded px-2 py-0.5 text-xs font-bold mt-1">
-           Bonus
-          </span>
-          <span>
-           <strong>
-            Gemini 作为补充：
-           </strong>
-           对于需要分析整个代码库的场景，可以借助 Gemini 超长的上下文窗口能力。
-          </span>
+         <li>
+          <strong>
+           API 调用：
+          </strong>
+          对于开发者，Sonnet 的 API 价格极具竞争力：输入 $3/百万 tokens，输出 $15/百万 tokens。这意味着构建应用的成本比使用 Opus 降低了许多。
          </li>
         </ul>
-       </div>
-       <p class="text-lg font-medium text-slate-800">
-        总的来说，Claude 更适合“写”，而 ChatGPT 更适合“审”。根据你的任务类型和对代码质量的要求，选择合适的工具，或者将它们组合起来，才能最大化 AI 在编程中的价值。
-       </p>
-       <div class="mt-12 pt-8 border-t border-slate-200 text-center">
-        <h3 class="text-2xl font-bold text-slate-900 mb-4">
-         想体验 Claude 强大的代码能力？
-        </h3>
-        <p class="text-slate-600 mb-8">
-         立即获取 Claude Pro 独享账号，支持 Claude Code 终端开发与 200K 长文本。
+       </section>
+       <footer class="mt-12 pt-8 border-t border-slate-200">
+        <p class="text-slate-600 italic">
+         <strong>
+          总结：
+         </strong>
+         Claude 3.5 Sonnet 证明了 Anthropic 在大模型领域的深厚功力。它不仅仅是一个聊天机器人，更是一个高效的生产力工具。无论你是想用它来写代码、读论文，还是激发创意，它都不会让你失望。
         </p>
-        <a class="inline-flex items-center justify-center px-8 py-3.5 rounded-xl bg-claude-600 text-white font-semibold shadow-lg hover:bg-claude-700 hover:shadow-claude-600/30 transition-all transform hover:-translate-y-0.5" href="/#pricing">
-         立即购买 Claude Pro
-        </a>
-       </div>
+       </footer>
        <div class="mt-12 pt-8 border-t border-slate-200">
         <h3 class="text-xl font-bold text-slate-900 mb-6">
          推荐阅读
         </h3>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-         <a class="group bg-white rounded-xl border border-slate-200 overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300" href="/blog/claude-3-5-sonnet-review">
-          <div class="h-32 bg-gradient-to-br from-gray-100 to-gray-50 flex items-center justify-center relative overflow-hidden">
-           <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]">
-           </div>
-           <div class="text-4xl transform group-hover:scale-110 transition-transform duration-300 drop-shadow-sm">
-            📄
-           </div>
-          </div>
-          <div class="p-4">
-           <div class="flex items-center gap-2 mb-2">
-            <span class="px-2 py-0.5 rounded-full bg-gray-100 text-gray-600 border-gray-100 text-[10px] font-bold border">
-             资讯
-            </span>
-            <span class="text-slate-400 text-xs">
-             2026-02-09
-            </span>
-           </div>
-           <h4 class="font-bold text-slate-900 group-hover:text-claude-600 transition-colors mb-2 line-clamp-2 text-sm md:text-base">
-            Claude 3.5 Sonnet LLM深度评测：目前最强的大语言模型？
-           </h4>
-          </div>
-         </a>
          <a class="group bg-white rounded-xl border border-slate-200 overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300" href="/blog/what-is-claude-mcp">
           <div class="h-32 bg-gradient-to-br from-orange-100 to-orange-50 flex items-center justify-center relative overflow-hidden">
            <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]">
@@ -450,6 +419,28 @@
            </div>
            <h4 class="font-bold text-slate-900 group-hover:text-claude-600 transition-colors mb-2 line-clamp-2 text-sm md:text-base">
             Claude CLI教程：从安装到实战，终端里的AI编程助手
+           </h4>
+          </div>
+         </a>
+         <a class="group bg-white rounded-xl border border-slate-200 overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300" href="/blog/what-is-claude-skills">
+          <div class="h-32 bg-gradient-to-br from-indigo-100 to-indigo-50 flex items-center justify-center relative overflow-hidden">
+           <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]">
+           </div>
+           <div class="text-4xl transform group-hover:scale-110 transition-transform duration-300 drop-shadow-sm">
+            🧩
+           </div>
+          </div>
+          <div class="p-4">
+           <div class="flex items-center gap-2 mb-2">
+            <span class="px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-600 border-indigo-100 text-[10px] font-bold border">
+             前沿技术
+            </span>
+            <span class="text-slate-400 text-xs">
+             2026-02-06
+            </span>
+           </div>
+           <h4 class="font-bold text-slate-900 group-hover:text-claude-600 transition-colors mb-2 line-clamp-2 text-sm md:text-base">
+            Claude Skills是什么？从零打造可复用的AI技能包
            </h4>
           </div>
          </a>
