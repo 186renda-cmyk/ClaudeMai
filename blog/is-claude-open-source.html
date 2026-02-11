@@ -4,11 +4,11 @@
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
   <title>
-   Claude Skills是什么？从零打造可复用的AI技能包 - ClaudeMai
+   Claude开源了吗？深度盘点Claude 3.5 Sonnet相关的开源生态 - ClaudeMai
   </title>
-  <meta content="Claude Skills是Anthropic推出的模块化能力扩展机制，将专业知识与工作流封装为可复用的技能包。本文详解Skills的核心概念、工作原理、与Claude Agent的关系以及Marketplace生态。" name="description"/>
-  <meta content="claude skills, claude agent skills, claude code skills, claude skills marketplace, ai技能开发, claude技能包" name="keywords"/>
-  <link href="https://claudemai.top/blog/what-is-claude-skills" rel="canonical"/>
+  <meta content="Claude 3.5 Sonnet模型本身闭源，但其生态圈拥有丰富的开源项目。本文详解官方开源的宪法AI文档、Skills技能库，以及社区开发的OpenCode、mcp-chrome等实用开源工具。" name="description"/>
+  <meta content="claude开源, claude开源吗, claude 3.5 sonnet开源, claude开源项目, opencode, claude skills" name="keywords"/>
+  <link href="https://claudemai.top/blog/is-claude-open-source" rel="canonical"/>
   <meta content="index, follow" name="robots"/>
   <link href="https://claudemai.top/logo.svg" rel="icon"/>
   <script src="https://cdn.tailwindcss.com">
@@ -96,7 +96,7 @@
         }
   </style>
   <script type="application/ld+json">
-   {"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Claude Skills是什么？从零打造可复用的AI技能包", "description": "Claude Skills是Anthropic推出的模块化能力扩展机制，将专业知识与工作流封装为可复用的技能包。本文详解Skills的核心概念、工作原理、与Claude Agent的关系以及Marketplace生态。", "datePublished": "2026-02-06", "author": {"@type": "Organization", "name": "ClaudeMai"}}
+   {"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Claude开源了吗？深度盘点Claude 3.5 Sonnet相关的开源生态", "description": "Claude 3.5 Sonnet模型本身闭源，但其生态圈拥有丰富的开源项目。本文详解官方开源的宪法AI文档、Skills技能库，以及社区开发的OpenCode、mcp-chrome等实用开源工具。", "datePublished": "2026-02-11", "author": {"@type": "Organization", "name": "ClaudeMai"}}
   </script>
  </head>
  <body class="bg-slate-50 text-slate-900 font-sans antialiased selection:bg-claude-600 selection:text-white">
@@ -171,7 +171,7 @@
       </li>
       <li itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
        <span aria-current="page" class="text-slate-800 font-medium" itemprop="name">
-        Claude Skills深度解析
+        Claude 开源生态解析
        </span>
        <meta content="3" itemprop="position"/>
       </li>
@@ -184,7 +184,7 @@
        <!-- Article Header -->
        <header class="mb-8 border-b border-slate-100 pb-8">
         <h1 class="text-3xl md:text-4xl font-serif font-bold text-slate-900 mb-6" itemprop="headline">
-         Claude Skills是什么？从零打造可复用的AI技能包
+         Claude开源了吗？深度盘点Claude 3.5 Sonnet相关的开源生态
         </h1>
         <div class="flex items-center gap-4 text-sm text-slate-500">
          <span class="flex items-center gap-1">
@@ -192,8 +192,8 @@
            <path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
            </path>
           </svg>
-          <time datetime="2026-02-06" itemprop="datePublished">
-           2026-02-06
+          <time datetime="2026-02-11" itemprop="datePublished">
+           2026-02-11
           </time>
          </span>
          <span class="flex items-center gap-1">
@@ -202,7 +202,7 @@
            </path>
           </svg>
           <span itemprop="articleSection">
-           前沿技术
+           资讯
           </span>
          </span>
         </div>
@@ -210,28 +210,35 @@
        <!-- Introduction -->
        <section class="mb-8">
         <p class="text-lg leading-relaxed">
+         很多开发者和 AI 爱好者都在问：
          <strong>
-          Claude Skills
+          “Claude 开源了吗？”
          </strong>
-         是 Anthropic 为 Claude 大语言模型推出的一项革命性功能。简单来说，它就像是给 AI 专门设计的“技能书”或“APP”。
         </p>
         <p>
-         过去，我们每次让 AI 干活，都要不厌其烦地描述要求、提供背景。现在，通过
+         答案是：
          <strong>
-          Skills
+          核心模型（如 Claude 3.5 Sonnet）本身是闭源的
          </strong>
-         ，我们可以将专业知识、业务逻辑和工具脚本封装成一个标准化的“技能包”。Claude 可以按需加载这些技能，瞬间从“通用助手”变身为特定领域的“专家”。
+         。但这并不意味着你只能做一个被动的“消费者”。围绕 Claude，官方和社区已经构建起了一个庞大且活跃的
+         <strong>
+          开源生态
+         </strong>
+         。
+        </p>
+        <p>
+         本文将带你盘点那些让 Claude 变得更强大、更灵活的开源项目，它们才是真正的“宝藏”。
         </p>
         <!-- Promotion Card -->
-        <div class="my-8 p-6 bg-purple-50 rounded-2xl border border-purple-100 lg:hidden">
-         <h3 class="text-lg font-bold text-purple-800 mb-2">
-          ⚡ 配合 Agent 使用效果更佳
+        <div class="my-8 p-6 bg-green-50 rounded-2xl border border-green-100 lg:hidden">
+         <h3 class="text-lg font-bold text-green-800 mb-2">
+          ⚡ 体验完整版 Claude 生态
          </h3>
-         <p class="text-sm text-purple-700 mb-4">
-          Skills 是 Agent 的“大脑回路”。了解如何构建强大的智能体，请阅读我们的 Agent 开发指南。
+         <p class="text-sm text-green-700 mb-4">
+          想要使用官方的 Claude Code 和完整 API 功能？推荐升级 Claude Pro。
          </p>
-         <a class="inline-flex items-center text-sm font-bold text-purple-600 hover:text-purple-700" href="/blog/what-is-claude-agent">
-          了解 Claude Agent
+         <a class="inline-flex items-center text-sm font-bold text-green-600 hover:text-green-700" href="/#pricing">
+          获取 Claude Pro 账号
           <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewbox="0 0 24 24">
            <path d="M17 8l4 4m0 0l-4 4m4-4H3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
            </path>
@@ -239,151 +246,84 @@
          </a>
         </div>
        </section>
-       <!-- Section 1: Core Concepts -->
-       <section id="concepts">
+       <!-- Section 1: Official Open Source -->
+       <section id="official">
         <h2>
-         一、 核心概念：什么是 Skills？
+         一、 官方开源：Claude 的“灵魂”与“技能包”
         </h2>
         <p>
-         Claude Skills 本质上是一组基于文件系统的模块化能力包。一个典型的 Skill 结构如下：
+         虽然 Anthropic 没有公开模型权重，但他们开源了两个非常核心的内容：
         </p>
-        <div class="code-block">
-         my-skill/
-├── SKILL.md          # 核心指令文件（SOP）
-├── scripts/          # 自动化脚本文件夹（Python/Bash）
-│   ├── analyzer.py
-│   └── formatter.py
-├── references/       # 参考文档
-│   ├── template.json
-│   └── guidelines.md
-└── assets/           # 模板和资源文件
-        </div>
         <h3>
-         三大核心价值
+         1. Claude 的“宪法” (Constitutional AI)
         </h3>
-        <div class="highlight-box">
-         <ul class="!mb-0">
-          <li>
-           <strong>
-            解决“健忘”问题：
-           </strong>
-           将格式要求、语气风格预设在技能包中，避免每次对话重复输入。
-          </li>
-          <li>
-           <strong>
-            模块化复用：
-           </strong>
-           像安装软件一样安装技能。团队成员可以共享同一个“代码审查 Skill”或“周报生成 Skill”。
-          </li>
-          <li>
-           <strong>
-            渐进式加载：
-           </strong>
-           采用“三阶段加载机制”（元数据 -&gt; 指令 -&gt; 资源），大幅节省上下文窗口 Token，即使安装几百个技能也不会拖慢模型速度。
-          </li>
-         </ul>
-        </div>
-       </section>
-       <!-- Section 2: How it Works -->
-       <section id="mechanism">
-        <h2>
-         二、 工作原理：渐进式披露机制
-        </h2>
         <p>
-         Claude Skills 采用了一种非常聪明的加载方式，称为“渐进式披露”（Progressive Disclosure）：
+         这是 Claude 的核心行为准则。Anthropic 将这份超过 23,000 词的文档以 CC0 协议公开。它详细说明了 Claude 应该遵循的伦理原则（如无害性、诚实性），这是 Claude 比其他模型更安全、更可控的根本原因。
         </p>
-        <ul>
-         <li>
-          <strong>
-           第一层：发现 (Discovery)
-          </strong>
-          <br/>
-          Claude 启动时，只加载所有技能的“元数据”（名称和简介）。这只占用极少的 Token（约 100 个），让 AI 知道自己“会什么”。
-         </li>
-         <li>
-          <strong>
-           第二层：激活 (Activation)
-          </strong>
-          <br/>
-          当你的请求匹配到某个技能时（例如“帮我生成周报”），Claude 会加载该技能的完整指令文件（SKILL.md），学习具体的 SOP。
-         </li>
-         <li>
-          <strong>
-           第三层：执行 (Execution)
-          </strong>
-          <br/>
-          在执行过程中，如果需要运行脚本或参考文档，Claude 才会按需读取
-          <code>
-           scripts/
-          </code>
-          或
-          <code>
-           references/
-          </code>
-          文件夹中的内容。
-         </li>
-        </ul>
+        <h3>
+         2. Claude Skills (技能库)
+        </h3>
+        <p>
+         你可以把这理解为给 AI 装的“插件”。官方提供了一个开源的技能仓库，包含了处理 Excel、PPT、PDF 等文档的标准流程。开发者可以直接复用这些代码，让 Claude 快速掌握处理特定任务的能力。
+        </p>
        </section>
-       <!-- Section 3: Marketplace -->
-       <section id="marketplace">
+       <!-- Section 2: Community Open Source -->
+       <section id="community">
         <h2>
-         三、 生态系统：Claude Code Marketplace
+         二、 社区开源：功能平替与增强
         </h2>
         <p>
+         社区的力量是无穷的。开发者们创造了许多工具，有些甚至比官方版还好用。
+        </p>
+        <h3>
+         1. OpenCode：开源版 Claude Code
+        </h3>
+        <p>
+         这是一个全自动的 AI 程序员工具。它最大的亮点是
          <strong>
-          Claude Code Marketplace
+          不绑定模型
          </strong>
-         类似于苹果的 App Store，是分发和管理 Skills 的平台。
+         。你可以自由切换使用 Claude、GPT 甚至本地的开源模型（如 Llama 3）。它不仅能写代码，还能自动运行测试并修复 Bug。
         </p>
+        <h3>
+         2. OpenClaw / Clawdbot
+        </h3>
+        <p>
+         这是一个基于 Claude Code 开发的开源个人 Agent Bot。它让 Claude 能够深度集成到你的工作流中，实现自动化的日常任务处理。
+        </p>
+        <h3>
+         3. learn-claude-code
+        </h3>
+        <p>
+         授人以鱼不如授人以渔。这是一个专门拆解 Claude Code 工作原理的开源项目，特别是它的“Agent Loop”（代理循环）机制。对于想深入研究 AI Agent 的开发者来说，这是绝佳的学习资料。
+        </p>
+       </section>
+       <!-- Section 3: Utility Tools -->
+       <section id="tools">
+        <h2>
+         三、 实用开源工具
+        </h2>
         <ul>
          <li>
           <strong>
-           一键安装：
+           mcp-chrome：
           </strong>
-          用户可以通过简单的命令（如
-          <code>
-           /plugin install
-          </code>
-          ）安装官方或社区贡献的插件。
+          让 Claude 能够在 Chrome 浏览器里自动操作，比如自动填表、截图、分析网页内容。
          </li>
          <li>
           <strong>
-           企业私有库：
+           AnyGif-Claude-Pet：
           </strong>
-          企业可以搭建私有的 Marketplace，通过 Git 仓库统一管理内部工具集和代码规范，实现“配置即代码”。
+          给你的编程生活加点料。这是一个桌面宠物项目，它会根据你在终端的操作做出反应，并在一天工作结束后生成总结，非常有趣。
          </li>
         </ul>
-       </section>
-       <!-- Section 4: Use Cases -->
-       <section id="use-cases">
-        <h2>
-         四、 典型应用场景
-        </h2>
-        <h3>
-         1. 办公自动化
-        </h3>
-        <p>
-         定义一个“会议纪要 Skill”，包含录音转文字的脚本和纪要模板。每次会后只需上传录音，Claude 自动生成标准格式的纪要。
-        </p>
-        <h3>
-         2. 编程开发
-        </h3>
-        <p>
-         创建一个“代码重构 Skill”，内置 PEP8 规范文档和 Lint 工具脚本。Claude 在写代码时会自动遵循这些规范，并调用工具进行检查。
-        </p>
-        <h3>
-         3. 数据分析
-        </h3>
-        <p>
-         封装数据库查询逻辑为 Skill。非技术人员只需用自然语言提问（“上季度销售额是多少？”），Claude 自动调用后台 SQL 脚本并生成图表报告。
-        </p>
        </section>
        <footer class="mt-12 pt-8 border-t border-slate-200">
         <p class="text-slate-600 italic">
          <strong>
           总结：
          </strong>
-         Claude Skills 正在重塑 AI 的工作模式。它让大模型从一个“什么都懂一点”的通用助手，进化为一系列“精通特定领域”的专业数字员工。
+         Claude 的闭源并没有阻碍其生态的繁荣。相反，通过 MCP 协议和活跃的开源社区，Claude 正在成为一个连接万物的核心枢纽。无论你是想直接使用，还是想二次开发，这些开源项目都能为你提供巨大的帮助。
         </p>
        </footer>
        <div class="mt-12 pt-8 border-t border-slate-200">
@@ -413,28 +353,6 @@
            </h4>
           </div>
          </a>
-         <a class="group bg-white rounded-xl border border-slate-200 overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300" href="/blog/is-claude-open-source">
-          <div class="h-32 bg-gradient-to-br from-gray-100 to-gray-50 flex items-center justify-center relative overflow-hidden">
-           <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]">
-           </div>
-           <div class="text-4xl transform group-hover:scale-110 transition-transform duration-300 drop-shadow-sm">
-            📄
-           </div>
-          </div>
-          <div class="p-4">
-           <div class="flex items-center gap-2 mb-2">
-            <span class="px-2 py-0.5 rounded-full bg-gray-100 text-gray-600 border-gray-100 text-[10px] font-bold border">
-             资讯
-            </span>
-            <span class="text-slate-400 text-xs">
-             2026-02-11
-            </span>
-           </div>
-           <h4 class="font-bold text-slate-900 group-hover:text-claude-600 transition-colors mb-2 line-clamp-2 text-sm md:text-base">
-            Claude开源了吗？深度盘点Claude 3.5 Sonnet相关的开源生态
-           </h4>
-          </div>
-         </a>
          <a class="group bg-white rounded-xl border border-slate-200 overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300" href="/blog/claude-3-5-sonnet-review">
           <div class="h-32 bg-gradient-to-br from-gray-100 to-gray-50 flex items-center justify-center relative overflow-hidden">
            <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]">
@@ -454,6 +372,28 @@
            </div>
            <h4 class="font-bold text-slate-900 group-hover:text-claude-600 transition-colors mb-2 line-clamp-2 text-sm md:text-base">
             Claude 3.5 Sonnet LLM深度评测：目前最强的大语言模型？
+           </h4>
+          </div>
+         </a>
+         <a class="group bg-white rounded-xl border border-slate-200 overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300" href="/blog/what-is-claude-mcp">
+          <div class="h-32 bg-gradient-to-br from-orange-100 to-orange-50 flex items-center justify-center relative overflow-hidden">
+           <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]">
+           </div>
+           <div class="text-4xl transform group-hover:scale-110 transition-transform duration-300 drop-shadow-sm">
+            🤖
+           </div>
+          </div>
+          <div class="p-4">
+           <div class="flex items-center gap-2 mb-2">
+            <span class="px-2 py-0.5 rounded-full bg-orange-50 text-orange-600 border-orange-100 text-[10px] font-bold border">
+             入门指南
+            </span>
+            <span class="text-slate-400 text-xs">
+             2026-02-09
+            </span>
+           </div>
+           <h4 class="font-bold text-slate-900 group-hover:text-claude-600 transition-colors mb-2 line-clamp-2 text-sm md:text-base">
+            Claude MCP教程：让AI连接万物，打造你的全能超级助手
            </h4>
           </div>
          </a>
